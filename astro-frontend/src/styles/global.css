@@ -117,23 +117,48 @@ button {
   @apply transition-all duration-300 ease-in-out;
 }
 
-/* Force spacing between PortableText blocks */
-.prose>*+* {
-  margin-top: 1.25em !important;
-}
-
+/* Force spacing and proper colors for PortableText blocks */
 .prose p {
   margin-bottom: 1.25em !important;
   margin-top: 0 !important;
+  color: var(--theme-text) !important;
 }
 
 .prose p+p {
   margin-top: 1.25em !important;
 }
 
-/* Support bold text in articles */
+/* Ensure bold text is visible */
 .prose strong,
 .prose b {
   font-weight: 700 !important;
+  color: var(--theme-text) !important;
+}
+
+/* Fix all text colors in prose */
+.prose {
+  color: var(--theme-text) !important;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: var(--theme-text) !important;
+}
+
+.prose a {
+  color: var(--theme-text) !important;
+  text-decoration: underline;
+}
+
+.prose ul,
+.prose ol {
+  color: var(--theme-text) !important;
+}
+
+.prose li {
   color: var(--theme-text) !important;
 }
