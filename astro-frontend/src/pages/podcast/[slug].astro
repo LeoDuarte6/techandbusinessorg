@@ -72,6 +72,13 @@ const youtubeId = getYouTubeId(episode.youtubeUrl);
 
       <!-- Media Embeds -->
       <div class="space-y-8 mb-16">
+        {/* Spotify Embed - Primary Player */}
+        {episode.spotifyEmbed && (
+          <div class="w-full">
+            <div class="rounded-xl overflow-hidden shadow-lg border border-[var(--theme-border)]" set:html={episode.spotifyEmbed} />
+          </div>
+        )}
+
         {/* YouTube Embed */}
         {youtubeId && (
           <div class="aspect-video w-full rounded-xl overflow-hidden shadow-lg border border-[var(--theme-border)]">
@@ -87,15 +94,10 @@ const youtubeId = getYouTubeId(episode.youtubeUrl);
           </div>
         )}
 
-        {/* Audio Embeds */}
-        <div class="grid md:grid-cols-2 gap-6">
-          {episode.spotifyEmbed && (
-            <div class="rounded-xl overflow-hidden shadow-md" set:html={episode.spotifyEmbed} />
-          )}
-          {episode.appleEmbed && (
-            <div class="rounded-xl overflow-hidden shadow-md" set:html={episode.appleEmbed} />
-          )}
-        </div>
+        {/* Apple Podcasts Embed */}
+        {episode.appleEmbed && (
+          <div class="w-full rounded-xl overflow-hidden shadow-md border border-[var(--theme-border)]" set:html={episode.appleEmbed} />
+        )}
       </div>
 
       <!-- Show Notes -->
