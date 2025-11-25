@@ -1,0 +1,69 @@
+---
+interface Props {
+  title: string;
+  videoUrl: string;
+  platform: string;
+  category?: string;
+  anchor?: {
+    name: string;
+    slug: { current: string };
+  };
+  thumbnail?: any;
+}
+
+const { title, videoUrl, platform, category, anchor, thumbnail } = Astro.props;
+
+// Extract video ID from URL for embedding
+function getEmbedUrl(url: string, platform: string) {
+  if (platform === 'YouTube') {
+    const videoId = url.split('v=')[1] || url.split('/').pop();
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+  // For TikTok and Instagram, we'll use the direct URL
+  return url;
+}
+
+const embedUrl = getEmbedUrl(videoUrl, platform);
+---
+
+<div class="group cursor-pointer">
+  <div class="relative aspect-reel bg-[var(--theme-gray-light)] rounded-lg overflow-hidden border border-[var(--theme-border)] mb-3 shadow-md transition-colors duration-300">
+    {platform === 'YouTube' ? (
+      <iframe
+        src={embedUrl}
+        class="w-full h-full"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    ) : (
+      <a href={videoUrl} target="_blank" rel="noopener noreferrer" class="block w-full h-full">
+        <div class="w-full h-full flex items-center justify-center bg-[var(--theme-gray-light)]">
+          <div class="text-center">
+            <div class="text-4xl mb-2 text-[var(--theme-text)]">▶</div>
+            <p class="text-sm text-[var(--theme-gray)]">Watch on {platform}</p>
+          </div>
+        </div>
+      </a>
+    )}
+    
+    {category && (
+      <div class="absolute top-3 left-3">
+        <span class="text-xs uppercase tracking-wider bg-[var(--theme-bg)]/80 backdrop-blur px-2 py-1 rounded border border-[var(--theme-border)] text-[var(--theme-text)]">
+          {category}
+        </span>
+      </div>
+    )}
+  </div>
+  
+  <div>
+    <h3 class="text-base font-semibold mb-1 text-[var(--theme-text)] group-hover:text-[var(--theme-gray)] transition-colors">
+      {title}
+    </h3>
+    {anchor && (
+      <p class="text-sm text-[var(--theme-gray)]">
+        {anchor.name}
+      </p>
+    )}
+  </div>
+</div>

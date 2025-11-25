@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { client as sanityClient } from '../../lib/sanity';
+
+export async function getStaticPaths() {
+  const authors = await sanityClient.fetch(`
+    *[_type == "author"] {
+      name,
+      slug,
+      headshot,
+      bio,
+      role
+    }
+  `);
+
+  return authors.map((author) => ({
+    params: { slug: author.slug.current },
+    props: { author },
+  }));
+}
+
+const { author } = Astro.props;
+
+// Fetch articles by this author
+const articles = await sanityClient.fetch(`
+  *[_type == "post" && author._ref == "${author._id}"] | order(publishedAt desc) {
+    title,
+    slug,
+    mainImage,
+    publishedAt,
+    excerpt,
+    "author": author->{name, slug, headshot},
+    readTime
+  }
+`);
+---
+
+<BaseLayout title={`${author.name} | Tech & Business`}>
+  <section class="section-padding">
+    <div class="container-custom max-w-4xl">
+      <!-- Author Header -->
+      <div class="mb-12 text-center">
+        {author.headshot && (
+          <img 
+            src={author.headshot.asset.url} 
+            alt={author.name}
+            class="w-32 h-32 rounded-full mx-auto mb-6 object-cover border-4 border-[var(--theme-border)]"
+          />
+        )}
+        <h1 class="text-4xl font-bold mb-2 text-[var(--theme-text)]">{author.name}</h1>
+        {author.role && (
+          <p class="text-lg text-[var(--theme-gray)] uppercase tracking-wide mb-4">{author.role}</p>
+        )}
+        {author.bio && (
+          <p class="text-lg text-[var(--theme-text)] max-w-2xl mx-auto">{author.bio}</p>
+        )}
+      </div>
+
+      <!-- Articles by Author -->
+      <div class="border-t border-[var(--theme-border)] pt-12">
+        <h2 class="text-2xl font-bold mb-8 text-[var(--theme-text)]">Articles by {author.name}</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          {articles.map((article) => (
+            <ArticleCard {...article} />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

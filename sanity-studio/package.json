@@ -1,0 +1,22 @@
+{
+  "name": "sanity-studio",
+  "version": "1.0.0",
+  "description": "Tech & Business CMS Studio",
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy"
+  },
+  "keywords": [
+    "sanity",
+    "cms"
+  ],
+  "author": "Tech & Business Team",
+  "license": "ISC",
+  "dependencies": {
+    "@sanity/vision": "^4.18.0",
+    "sanity": "^4.18.0",
+    "styled-components": "^6.1.19"
+  }
+}

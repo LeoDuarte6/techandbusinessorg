@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Default Dark Mode */
+  --theme-bg: #000000;
+  --theme-text: #ffffff;
+  --theme-accent: #ffffff;
+  --theme-border: #333333;
+  --theme-gray: #666666;
+  --theme-gray-light: #333333;
+
+  /* Brand Colors */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-gray-dark: #1a1a1a;
+  --color-gray-medium: #333333;
+  --color-gray-light: #666666;
+
+  /* Typography */
+  --font-sans: 'Inter', sans-serif;
+}
+
+[data-theme="light"] {
+  --theme-bg: #ffffff;
+  --theme-text: #000000;
+  --theme-accent: #000000;
+  --theme-border: #e5e7eb;
+  --theme-gray: #666666;
+  --theme-gray-light: #f3f4f6;
+
+  --color-gray-medium: #e5e7eb;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  scroll-behavior: smooth;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-extrabold;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+h1 {
+  @apply text-5xl md:text-6xl lg:text-7xl;
+}
+
+h2 {
+  @apply text-3xl md:text-4xl lg:text-5xl;
+}
+
+h3 {
+  @apply text-2xl md:text-3xl;
+}
+
+p {
+  @apply text-base md:text-lg;
+  line-height: 1.6;
+}
+
+/* Utilities */
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.section-padding {
+  @apply py-12 md:py-16;
+}
+
+.section-padding-sm {
+  @apply py-8 md:py-12;
+}
+
+.border-custom {
+  @apply border border-tb-gray-medium;
+}
+
+/* Aspect Ratios */
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-reel {
+  aspect-ratio: 9 / 16;
+}
+
+/* Smooth Transitions */
+a,
+button {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+/* Force spacing between PortableText blocks */
+.prose>*+* {
+  margin-top: 1.25em !important;
+}
+
+.prose p {
+  margin-bottom: 1.25em !important;
+  margin-top: 0 !important;
+}
+
+.prose p+p {
+  margin-top: 1.25em !important;
+}
+
+/* Support bold text in articles */
+.prose strong,
+.prose b {
+  font-weight: 700 !important;
+  color: var(--theme-text) !important;
+}

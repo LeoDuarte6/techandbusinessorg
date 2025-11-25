@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import VideoCard from '../components/VideoCard.astro';
+
+// Placeholder data - will be replaced with Sanity data
+const videos = [
+  {
+    title: 'Market Analysis',
+    videoUrl: '#',
+    platform: 'TikTok',
+    category: 'Finance',
+    anchor: { name: 'Joey', slug: { current: 'joey' } }
+  },
+  {
+    title: 'Tech Trends 2024',
+    videoUrl: '#',
+    platform: 'Instagram',
+    category: 'Technology',
+    anchor: { name: 'Pierce', slug: { current: 'pierce' } }
+  },
+  {
+    title: "Founder's Log",
+    videoUrl: '#',
+    platform: 'TikTok',
+    category: 'Entrepreneurship',
+    anchor: { name: 'Leo', slug: { current: 'leo' } }
+  },
+];
+---
+
+<BaseLayout title="Videos | Tech & Business">
+  <section class="section-padding">
+    <div class="container-custom">
+      <div class="mb-12">
+        <h1 class="mb-4 text-[var(--theme-text)]">Videos & Reels</h1>
+        <p class="text-lg text-[var(--theme-gray)] max-w-2xl">
+          Quick takes and insights from our team on technology, business, and finance.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {videos.map((video) => (
+          <VideoCard {...video} />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

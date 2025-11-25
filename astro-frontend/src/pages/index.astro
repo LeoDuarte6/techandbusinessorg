@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import VideoCard from '../components/VideoCard.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { getAllVideos, getAllPosts } from '../lib/sanity';
+
+// Fetch real data from Sanity
+const videos = await getAllVideos(6);
+const posts = await getAllPosts(6);
+
+// Placeholder videos (since we don't have videos in Sanity yet)
+const placeholderVideos = [
+  {
+    title: 'Market Analysis',
+    videoUrl: '#',
+    platform: 'TikTok',
+    category: 'Finance',
+    anchor: { name: 'Joey', slug: { current: 'joey' } }
+  },
+  {
+    title: 'Tech Trends 2024',
+    videoUrl: '#',
+    platform: 'Instagram',
+    category: 'Technology',
+    anchor: { name: 'Pierce', slug: { current: 'pierce' } }
+  },
+  {
+    title: "Founder's Log",
+    videoUrl: '#',
+    platform: 'TikTok',
+    category: 'Entrepreneurship',
+    anchor: { name: 'Leo', slug: { current: 'leo' } }
+  },
+];
+---
+
+<BaseLayout>
+  <Hero />
+
+  <!-- Featured Articles Section -->
+  <section class="section-padding transition-colors duration-300">
+    <div class="container-custom">
+      <div class="flex justify-between items-center mb-12">
+        <h2 class="text-4xl font-bold text-[var(--theme-text)]">Featured Articles</h2>
+        <a 
+          href="/articles" 
+          class="text-sm font-semibold text-[var(--theme-text)] hover:text-[var(--theme-gray)] transition-colors flex items-center gap-2"
+        >
+          View All Articles
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts && posts.length > 0 ? (
+          posts.slice(0, 6).map((article) => (
+            <ArticleCard {...article} />
+          ))
+        ) : (
+          <p class="text-[var(--theme-gray)]">No articles yet. Check back soon!</p>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Takes / Reels Section -->
+  <section class="section-padding">
+    <div class="container-custom">
+      <div class="flex justify-between items-end mb-12">
+        <h2 class="text-[var(--theme-text)]">Quick Takes</h2>
+        <a 
+          href="/videos" 
+          class="text-sm font-semibold border-b border-[var(--theme-text)] pb-1 text-[var(--theme-text)] hover:text-[var(--theme-gray)] hover:border-[var(--theme-gray)] transition-colors"
+        >
+          View All Videos →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {placeholderVideos.map((video) => (
+          <VideoCard {...video} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission Statement -->
+  <section class="section-padding">
+    <div class="container-custom">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="mb-6 text-[var(--theme-text)]">The Network for Ambitious Students.</h2>
+        <p class="text-lg text-[var(--theme-gray)]">
+          Tech & Business is a student-run media platform covering the intersection of technology, 
+          artificial intelligence, and business. We're creating a network for ambitious students 
+          to learn, connect, and grow.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
