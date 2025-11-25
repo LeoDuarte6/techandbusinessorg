@@ -4,8 +4,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { client as sanityClient, urlFor } from '../lib/sanity';
 
-const authors = await sanityClient.fetch(`
-  *[_type == "author"] | order(name asc) {
+const allAuthors = await sanityClient.fetch(`
+  *[_type == "author"] {
     name,
     role,
     bio,
@@ -13,6 +13,13 @@ const authors = await sanityClient.fetch(`
     slug
   }
 `);
+
+// Define desired order and filter out others (like Peter)
+const desiredOrder = ['Leo Duarte', 'Pierce', 'Joey'];
+const authors = desiredOrder
+  .map(name => allAuthors.find(a => a.name.includes(name)))
+  .filter(Boolean);
+
 ---
 
 <BaseLayout title="About | Tech & Business">

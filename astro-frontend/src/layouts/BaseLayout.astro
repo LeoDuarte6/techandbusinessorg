@@ -35,7 +35,7 @@ const {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
-  <nav class="sticky top-0 z-50 bg-[var(--theme-bg)]/95 backdrop-blur-md border-b border-[var(--theme-border)] transition-colors duration-300">
+  <nav class="relative z-50 bg-[var(--theme-bg)] border-b border-[var(--theme-border)] transition-colors duration-300">
     <div class="container-custom">
       <div class="flex justify-between items-center py-5">
         <a href="/" class="flex flex-col leading-none font-semibold tracking-tight text-[var(--theme-text)] hover:text-[var(--theme-gray)] transition-colors">
@@ -115,7 +115,7 @@ const {
         The intersection of technology, business, and student ambition.
       </p>
       
-      <form class="flex flex-col md:flex-row gap-3 max-w-md mx-auto mb-16">
+      <form class="flex flex-col md:flex-row gap-3 max-w-md mx-auto mb-8">
         <input 
           type="email" 
           placeholder="Enter your email address" 
@@ -130,8 +130,8 @@ const {
         </button>
       </form>
 
-      <div class="text-sm text-[var(--theme-gray)]">
-        <p>&copy; 2024 Tech & Business Organization.</p>
+      <div class="text-sm text-[var(--theme-gray)] mt-4">
+        <p>&copy; 2025 techandbusiness.org</p>
       </div>
     </div>
   </footer>
@@ -150,8 +150,8 @@ const {
       // Update status bar color
       const themeColor = document.getElementById('theme-color');
       if (themeColor) {
-        // Match the top color of the gradient: #1a1a1a (dark) and #f4f4f5 (light)
-        themeColor.setAttribute('content', newTheme === 'dark' ? '#1a1a1a' : '#f4f4f5');
+        // Match --theme-bg colors: #09090b (dark) and #ffffff (light)
+        themeColor.setAttribute('content', newTheme === 'dark' ? '#09090b' : '#ffffff');
       }
     };
 
@@ -162,7 +162,7 @@ const {
     // Set initial status bar color
     const themeColor = document.getElementById('theme-color');
     if (themeColor) {
-      themeColor.setAttribute('content', savedTheme === 'dark' ? '#1a1a1a' : '#f4f4f5');
+      themeColor.setAttribute('content', savedTheme === 'dark' ? '#09090b' : '#ffffff');
     }
 
     // Add event listeners
