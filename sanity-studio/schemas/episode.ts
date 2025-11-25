@@ -45,6 +45,12 @@ export default defineType({
             initialValue: () => new Date().toISOString(),
         }),
         defineField({
+            name: 'youtubeUrl',
+            title: 'YouTube URL',
+            type: 'url',
+            description: 'Full URL to the YouTube video (e.g., https://www.youtube.com/watch?v=...)',
+        }),
+        defineField({
             name: 'spotifyEmbed',
             title: 'Spotify Embed Code',
             type: 'text',

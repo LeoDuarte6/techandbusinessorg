@@ -6,31 +6,23 @@ import PodcastPlayer from '../components/PodcastPlayer.astro';
 const episodes = [
   {
     title: 'The Pivot to Video',
-    episodeNumber: 1,
-    hosts: [
-      { name: 'Pierce', slug: { current: 'pierce' } },
-      { name: 'Peter', slug: { current: 'peter' } },
-    ],
-    guests: [
-      { name: 'Leo', slug: { current: 'leo' } },
-    ],
-  },
-];
+import { client as sanityClient, urlFor } from '../lib/sanity';
+
+const episodes = await sanityClient.fetch(`
+  *[_type == "episode"] | order(publishedAt desc) {
+    title,
+    slug,
+    episodeNumber,
+    publishedAt,
+    coverArt,
+    excerpt
+  }
+`);
 ---
 
 <BaseLayout title="Podcast | Tech & Business">
   <section class="section-padding">
     <div class="container-custom">
-      <div class="max-w-4xl mx-auto">
-        <div class="mb-12">
-          <h1 class="mb-4">Podcast</h1>
-          <p class="text-lg text-tb-gray-light">
-            Long-form conversations exploring technology, business, and student entrepreneurship.
-          </p>
-        </div>
-
-        <div class="space-y-8">
-          {episodes.map((episode) => (
             <PodcastPlayer {...episode} />
           ))}
         </div>
