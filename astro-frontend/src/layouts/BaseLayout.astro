@@ -150,7 +150,8 @@ const {
       // Update status bar color
       const themeColor = document.getElementById('theme-color');
       if (themeColor) {
-        themeColor.setAttribute('content', newTheme === 'dark' ? '#000000' : '#ffffff');
+        // Match --theme-bg colors: #09090b (dark) and #ffffff (light)
+        themeColor.setAttribute('content', newTheme === 'dark' ? '#09090b' : '#ffffff');
       }
     };
 
@@ -161,7 +162,7 @@ const {
     // Set initial status bar color
     const themeColor = document.getElementById('theme-color');
     if (themeColor) {
-      themeColor.setAttribute('content', savedTheme === 'dark' ? '#000000' : '#ffffff');
+      themeColor.setAttribute('content', savedTheme === 'dark' ? '#09090b' : '#ffffff');
     }
 
     // Add event listeners
