@@ -35,7 +35,7 @@ const {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
-  <nav class="sticky top-0 z-50 bg-[var(--theme-bg)]/90 backdrop-blur-lg border-b border-[var(--theme-border)] transition-colors duration-300">
+  <nav class="sticky top-0 z-50 bg-[var(--theme-bg)]/95 backdrop-blur-md border-b border-[var(--theme-border)] transition-colors duration-300">
     <div class="container-custom">
       <div class="flex justify-between items-center py-5">
         <a href="/" class="flex flex-col leading-none font-semibold tracking-tight text-[var(--theme-text)] hover:text-[var(--theme-gray)] transition-colors">
@@ -111,7 +111,7 @@ const {
   <footer id="subscribe" class="border-t border-[var(--theme-border)] section-padding-sm bg-[var(--theme-bg)] transition-colors duration-300">
     <div class="container-custom text-center">
       <h2 class="mb-4 text-[var(--theme-text)]">Join the Network.</h2>
-      <p class="text-[var(--theme-gray)] max-w-2xl mx-auto mb-8">
+      <p class="text-[var(--theme-gray)] max-w-2xl mx-auto mb-6">
         The intersection of technology, business, and student ambition.
       </p>
       
@@ -131,7 +131,7 @@ const {
       </form>
 
       <div class="text-sm text-[var(--theme-gray)]">
-        <p>&copy; 2024 Tech & Business Organization. All rights reserved.</p>
+        <p>&copy; 2024 Tech & Business Organization.</p>
       </div>
     </div>
   </footer>
@@ -150,8 +150,8 @@ const {
       // Update status bar color
       const themeColor = document.getElementById('theme-color');
       if (themeColor) {
-        // Match --theme-bg colors: #09090b (dark) and #ffffff (light)
-        themeColor.setAttribute('content', newTheme === 'dark' ? '#09090b' : '#ffffff');
+        // Match the top color of the gradient: #1a1a1a (dark) and #f4f4f5 (light)
+        themeColor.setAttribute('content', newTheme === 'dark' ? '#1a1a1a' : '#f4f4f5');
       }
     };
 
@@ -162,7 +162,7 @@ const {
     // Set initial status bar color
     const themeColor = document.getElementById('theme-color');
     if (themeColor) {
-      themeColor.setAttribute('content', savedTheme === 'dark' ? '#09090b' : '#ffffff');
+      themeColor.setAttribute('content', savedTheme === 'dark' ? '#1a1a1a' : '#f4f4f5');
     }
 
     // Add event listeners

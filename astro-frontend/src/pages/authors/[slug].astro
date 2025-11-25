@@ -94,7 +94,7 @@ const episodes = await sanityClient.fetch(`
       {articles.length > 0 && (
         <div class="border-t border-[var(--theme-border)] pt-12 mb-16">
           <h2 class="text-2xl font-bold mb-8 text-[var(--theme-text)] flex items-center gap-2">
-            <span>✍️</span> Articles by {author.name}
+            Articles by {author.name}
           </h2>
           <div class="grid md:grid-cols-2 gap-8">
             {articles.map((article) => (
@@ -108,7 +108,7 @@ const episodes = await sanityClient.fetch(`
       {episodes.length > 0 && (
         <div class="border-t border-[var(--theme-border)] pt-12">
           <h2 class="text-2xl font-bold mb-8 text-[var(--theme-text)] flex items-center gap-2">
-            <span>🎙️</span> Appears On
+            Appears On
           </h2>
           <div class="grid gap-6">
             {episodes.map((episode) => (

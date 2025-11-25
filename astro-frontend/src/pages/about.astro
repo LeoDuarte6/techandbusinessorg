@@ -1,23 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const team = [
-  {
-    name: 'Leo Duarte',
-    role: 'Infrastructure & Design Lead',
-    bio: 'Technical lead and entrepreneur focused on building systems and infrastructure. Responsible for the platform architecture and design.',
-  },
-  {
-    name: 'Pierce',
-    role: 'Co-Host & Content Creator',
-    bio: 'Amherst student and podcast co-host. Brings insights on technology trends and student perspectives.',
-  },
-  {
-    name: 'Joey',
-    role: 'Founding Staff & Finance',
-    bio: 'Syracuse student specializing in financial analysis and market commentary. Content creator focused on business fundamentals.',
-  },
-];
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { client as sanityClient, urlFor } from '../lib/sanity';
+
+const authors = await sanityClient.fetch(`
+  *[_type == "author"] | order(name asc) {
+    name,
+    role,
+    bio,
+    headshot,
+    slug
+  }
+`);
 ---
 
 <BaseLayout title="About | Tech & Business">
@@ -42,12 +37,30 @@ const team = [
         <h2 class="mb-12 text-[var(--theme-text)]">The Team</h2>
         
         <div class="grid md:grid-cols-3 gap-8">
-          {team.map((member) => (
+          {authors.map((member) => (
             <div class="text-center">
-              <div class="w-32 h-32 mx-auto mb-4 rounded-full bg-[var(--theme-gray-light)] border border-[var(--theme-border)]"></div>
-              <h3 class="text-xl font-bold mb-1 text-[var(--theme-text)]">{member.name}</h3>
-              <p class="text-sm text-[var(--theme-gray)] uppercase tracking-wider mb-3">{member.role}</p>
-              <p class="text-sm text-[var(--theme-gray)]">{member.bio}</p>
+              {member.headshot ? (
+                <img 
+                  src={urlFor(member.headshot).width(200).height(200).url()} 
+                  alt={member.name}
+                  class="w-32 h-32 mx-auto mb-4 rounded-full object-cover border border-[var(--theme-border)]"
+                />
+              ) : (
+                <div class="w-32 h-32 mx-auto mb-4 rounded-full bg-[var(--theme-gray-light)] border border-[var(--theme-border)] flex items-center justify-center text-2xl font-bold text-[var(--theme-gray)]">
+                  {member.name.charAt(0)}
+                </div>
+              )}
+              <h3 class="text-xl font-bold mb-1 text-[var(--theme-text)]">
+                <a href={`/authors/${member.slug.current}`} class="hover:underline decoration-2 underline-offset-4">
+                  {member.name}
+                </a>
+              </h3>
+              {member.role && (
+                <p class="text-sm text-[var(--theme-gray)] uppercase tracking-wider mb-3">{member.role}</p>
+              )}
+              {member.bio && (
+                <p class="text-sm text-[var(--theme-gray)] line-clamp-3">{member.bio}</p>
+              )}
             </div>
           ))}
         </div>
