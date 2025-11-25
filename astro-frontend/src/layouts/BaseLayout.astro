@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import AuthModal from '../components/AuthModal.astro';
 
 interface Props {
   title?: string;
@@ -65,12 +66,24 @@ const {
             <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden text-[var(--theme-text)]"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
 
-          <a 
-            href="#subscribe" 
+          <!-- Auth Button -->
+          <button 
+            id="auth-button"
             class="hidden md:inline-block bg-[var(--theme-text)] text-[var(--theme-bg)] px-4 py-2 rounded text-sm font-semibold hover:opacity-80 transition-opacity"
           >
-            Subscribe
-          </a>
+            Login
+          </button>
+          
+          <!-- User Profile (shown when logged in) -->
+          <div id="user-profile" class="hidden md:flex items-center gap-3">
+            <span id="user-email" class="text-sm text-[var(--theme-gray)]"></span>
+            <button 
+              id="logout-button"
+              class="text-sm text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors"
+            >
+              Logout
+            </button>
+          </div>
         </div>
 
         <!-- Mobile Menu Button & Theme Toggle -->
@@ -103,6 +116,9 @@ const {
       </div>
     </div>
   </nav>
+
+  <!-- Auth Modal -->
+  <AuthModal />
 
   <main class="min-h-screen bg-[var(--theme-bg)] transition-colors duration-300">
     <slot />
@@ -197,6 +213,49 @@ const {
       mobileMenu?.classList.toggle('hidden');
       menuOpen?.classList.toggle('hidden');
       menuClose?.classList.toggle('hidden');
+    });
+
+    // Auth state management
+    import { auth } from '../lib/supabase';
+
+    const authButton = document.getElementById('auth-button');
+    const userProfile = document.getElementById('user-profile');
+    const userEmail = document.getElementById('user-email');
+    const logoutButton = document.getElementById('logout-button');
+
+    // Check auth state on load
+    auth.getUser().then(user => {
+      if (user) {
+        authButton?.classList.add('hidden');
+        userProfile?.classList.remove('hidden');
+        if (userEmail) userEmail.textContent = user.email || '';
+      } else {
+        authButton?.classList.remove('hidden');
+        userProfile?.classList.add('hidden');
+      }
+    });
+
+    // Listen for auth changes
+    auth.onAuthStateChange((user) => {
+      if (user) {
+        authButton?.classList.add('hidden');
+        userProfile?.classList.remove('hidden');
+        if (userEmail) userEmail.textContent = user.email || '';
+      } else {
+        authButton?.classList.remove('hidden');
+        userProfile?.classList.add('hidden');
+      }
+    });
+
+    // Auth button click
+    authButton?.addEventListener('click', () => {
+      (window as any).openAuthModal();
+    });
+
+    // Logout button click
+    logoutButton?.addEventListener('click', async () => {
+      await auth.signOut();
+      window.location.reload();
     });
 
     // Close menu when clicking a link
