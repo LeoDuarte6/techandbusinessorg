@@ -30,12 +30,12 @@ const authors = [...new Set(articles.map(a => a.author?.name).filter(Boolean))];
       </div>
 
       <!-- Filter and Sort Controls -->
-      <div class="flex flex-wrap gap-4 mb-8 pb-6 border-b border-[var(--theme-border)]">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[var(--theme-border)]">
         <div class="flex items-center gap-2">
-          <label for="author-filter" class="text-sm font-semibold text-[var(--theme-text)]">Author:</label>
+          <label for="author-filter" class="text-sm font-semibold text-[var(--theme-text)] whitespace-nowrap">Author:</label>
           <select 
             id="author-filter" 
-            class="px-4 py-2 bg-[var(--theme-bg)] border border-[var(--theme-border)] text-[var(--theme-text)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--theme-text)]"
+            class="w-full sm:w-auto px-3 py-1.5 bg-[var(--theme-bg)] border border-[var(--theme-border)] text-[var(--theme-text)] text-sm rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--theme-text)]"
           >
             <option value="">All Authors</option>
             {authors.map(author => (
@@ -45,15 +45,15 @@ const authors = [...new Set(articles.map(a => a.author?.name).filter(Boolean))];
         </div>
 
         <div class="flex items-center gap-2">
-          <label for="sort-by" class="text-sm font-semibold text-[var(--theme-text)]">Sort by:</label>
+          <label for="sort-by" class="text-sm font-semibold text-[var(--theme-text)] whitespace-nowrap">Sort:</label>
           <select 
             id="sort-by" 
-            class="px-4 py-2 bg-[var(--theme-bg)] border border-[var(--theme-border)] text-[var(--theme-text)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--theme-text)]"
+            class="w-full sm:w-auto px-3 py-1.5 bg-[var(--theme-bg)] border border-[var(--theme-border)] text-[var(--theme-text)] text-sm rounded-md focus:outline-none focus:ring-1 focus:ring-[var(--theme-text)]"
           >
-            <option value="date-desc">Newest First</option>
-            <option value="date-asc">Oldest First</option>
-            <option value="read-time-asc">Shortest Read</option>
-            <option value="read-time-desc">Longest Read</option>
+            <option value="date-desc">Newest</option>
+            <option value="date-asc">Oldest</option>
+            <option value="read-time-asc">Shortest</option>
+            <option value="read-time-desc">Longest</option>
           </select>
         </div>
       </div>
