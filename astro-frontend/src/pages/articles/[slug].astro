@@ -186,20 +186,7 @@ const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
       <h2 class="mb-8 text-[var(--theme-text)]">Keep Reading</h2>
       <div class="grid md:grid-cols-3 gap-6">
         {relatedArticles.map((article) => (
-          <a href={`/articles/${article.slug.current}`} class="group block bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-xl p-6 hover:border-[var(--theme-text)] transition-colors">
-            <h3 class="text-lg font-bold text-[var(--theme-text)] mb-2 group-hover:underline decoration-2 underline-offset-4">
-              {article.title}
-            </h3>
-            {article.excerpt && (
-              <p class="text-sm text-[var(--theme-gray)] line-clamp-2 mb-4">
-                {article.excerpt}
-              </p>
-            )}
-            <div class="flex items-center gap-2 text-xs text-[var(--theme-gray)] font-medium uppercase tracking-wider">
-              <span>Read Article</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </div>
-          </a>
+          <ArticleCard {...article} />
         ))}
       </div>
     </div>

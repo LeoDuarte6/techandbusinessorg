@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
-import { client as sanityClient } from '../../lib/sanity';
+import { client as sanityClient, urlFor } from '../../lib/sanity';
 
 export async function getStaticPaths() {
   const authors = await sanityClient.fetch(`
@@ -58,7 +58,7 @@ const episodes = await sanityClient.fetch(`
       <div class="mb-16 text-center">
         {author.headshot && (
           <img 
-            src={author.headshot.asset.url} 
+            src={urlFor(author.headshot).width(400).height(400).url()} 
             alt={author.name}
             class="w-40 h-40 rounded-full mx-auto mb-6 object-cover border-4 border-[var(--theme-border)] shadow-lg"
           />

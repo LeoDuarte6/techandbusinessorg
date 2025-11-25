@@ -6,12 +6,15 @@
 
 :root {
   /* Default Dark Mode */
-  --theme-bg: #000000;
+  /* Default Dark Mode */
+  --theme-bg: #09090b;
+  --theme-bg-gradient: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #09090b 100%);
   --theme-text: #ffffff;
   --theme-accent: #ffffff;
-  --theme-border: #333333;
-  --theme-gray: #666666;
-  --theme-gray-light: #333333;
+  --theme-border: #27272a;
+  --theme-gray: #a1a1aa;
+  --theme-gray-light: #18181b;
+  --theme-card-gradient: linear-gradient(180deg, #18181b 0%, #09090b 100%);
 
   /* Brand Colors */
   --color-black: #000000;
@@ -26,11 +29,13 @@
 
 [data-theme="light"] {
   --theme-bg: #ffffff;
-  --theme-text: #000000;
-  --theme-accent: #000000;
-  --theme-border: #e5e7eb;
-  --theme-gray: #666666;
-  --theme-gray-light: #f3f4f6;
+  --theme-bg-gradient: radial-gradient(circle at 50% 0%, #f4f4f5 0%, #ffffff 100%);
+  --theme-text: #09090b;
+  --theme-accent: #09090b;
+  --theme-border: #e4e4e7;
+  --theme-gray: #71717a;
+  --theme-gray-light: #f4f4f5;
+  --theme-card-gradient: linear-gradient(180deg, #ffffff 0%, #f4f4f5 100%);
 
   --color-gray-medium: #e5e7eb;
 }
@@ -41,19 +46,20 @@
   box-sizing: border-box;
 }
 
-html,
-body {
-  overflow-x: hidden;
-}
-
 html {
   font-family: var(--font-sans);
-  background-color: var(--theme-bg);
-  color: var(--theme-text);
   scroll-behavior: smooth;
-  transition: background-color 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: var(--theme-bg);
+  background-image: var(--theme-bg-gradient);
+  background-attachment: fixed;
+  color: var(--theme-text);
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 /* Typography */
