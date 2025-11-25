@@ -1,11 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PodcastPlayer from '../components/PodcastPlayer.astro';
-
-// Placeholder data
-const episodes = [
-  {
-    title: 'The Pivot to Video',
 import { client as sanityClient, urlFor } from '../lib/sanity';
 
 const episodes = await sanityClient.fetch(`
@@ -23,9 +17,42 @@ const episodes = await sanityClient.fetch(`
 <BaseLayout title="Podcast | Tech & Business">
   <section class="section-padding">
     <div class="container-custom">
-            <PodcastPlayer {...episode} />
-          ))}
-        </div>
+      <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 text-[var(--theme-text)]">The Podcast</h1>
+        <p class="text-xl text-[var(--theme-gray)] max-w-2xl mx-auto">
+          Conversations with industry leaders, innovators, and ambitious students shaping the future.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {episodes.map((episode) => (
+          <a href={`/podcast/${episode.slug.current}`} class="group block bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-xl overflow-hidden hover:border-[var(--theme-text)] transition-all duration-300">
+            <div class="aspect-square bg-[var(--theme-gray-light)] relative overflow-hidden">
+              {episode.coverArt ? (
+                <img 
+                  src={urlFor(episode.coverArt).width(600).height(600).url()} 
+                  alt={episode.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              ) : (
+                <div class="w-full h-full flex items-center justify-center text-[var(--theme-gray)]">
+                  <span class="text-4xl">🎙️</span>
+                </div>
+              )}
+            </div>
+            <div class="p-6">
+              <div class="text-xs font-bold text-[var(--theme-gray)] uppercase tracking-wider mb-2">
+                Episode {episode.episodeNumber}
+              </div>
+              <h2 class="text-xl font-bold text-[var(--theme-text)] mb-3 group-hover:underline decoration-2 underline-offset-4 line-clamp-2">
+                {episode.title}
+              </h2>
+              <div class="text-sm text-[var(--theme-gray)]">
+                {new Date(episode.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              </div>
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   </section>
