@@ -48,21 +48,50 @@ const formattedDate = new Date(publishedAt).toLocaleDateString('en-US', {
         </p>
       )}
       
-      <div class="flex items-center gap-3 text-sm text-[var(--theme-gray)]">
-        {author && (
-          <>
-            <span class="font-semibold text-[var(--theme-text)]">{author.name}</span>
-            <span>•</span>
-          </>
-        )}
-        <time datetime={publishedAt}>{formattedDate}</time>
-        {readTime && (
-          <>
-            <span>•</span>
-            <span>{readTime} min read</span>
-          </>
-        )}
-      </div>
+      {author && (
+        <div class="flex items-center gap-3">
+          {author.headshot ? (
+            <a href={`/authors/${author.slug.current}`} class="block hover:opacity-80 transition-opacity">
+              <img 
+                src={urlFor(author.headshot).width(50).height(50).url()} 
+                alt={author.name}
+                class="w-8 h-8 rounded-full object-cover border border-[var(--theme-border)]"
+              />
+            </a>
+          ) : (
+            <a href={`/authors/${author.slug.current}`} class="block hover:opacity-80 transition-opacity">
+              <div class="w-8 h-8 rounded-full bg-[var(--theme-gray-light)] flex items-center justify-center text-[var(--theme-gray)] font-bold text-xs">
+                {author.name.charAt(0)}
+              </div>
+            </a>
+          )}
+          
+          <div class="flex items-center gap-2 text-sm text-[var(--theme-gray)]">
+            <a href={`/authors/${author.slug.current}`} class="font-medium text-[var(--theme-text)] hover:underline">
+              {author.name}
+            </a>
+            <span>&bull;</span>
+            <time datetime={publishedAt}>{formattedDate}</time>
+            {readTime && (
+              <>
+                <span>&bull;</span>
+                <span>{readTime} min read</span>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+      {!author && (
+        <div class="flex items-center gap-3 text-sm text-[var(--theme-gray)]">
+          <time datetime={publishedAt}>{formattedDate}</time>
+          {readTime && (
+            <>
+              <span>•</span>
+              <span>{readTime} min read</span>
+            </>
+          )}
+        </div>
+      )}
     </div>
   </a>
 </article>
