@@ -63,7 +63,7 @@ const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
     <!-- Article Header Section -->
     <div class="max-w-3xl mx-auto px-4 pt-12 pb-8">
       <!-- Breadcrumbs -->
-      <nav class="flex items-center gap-2 text-sm text-[var(--theme-gray)] mb-8">
+      <nav class="flex items-center gap-2 text-sm text-[var(--theme-gray)] mb-4">
         <a href="/" class="hover:text-[var(--theme-text)] transition-colors">Home</a>
         <span>&rsaquo;</span>
         <a href="/articles" class="hover:text-[var(--theme-text)] transition-colors">Articles</a>
@@ -72,11 +72,11 @@ const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
       </nav>
 
       <!-- Title & Meta -->
-      <h1 class="text-3xl md:text-5xl font-bold mb-6 leading-tight text-[var(--theme-text)]">
+      <h1 class="text-3xl md:text-5xl font-bold mb-3 leading-tight text-[var(--theme-text)]">
         {post.title}
       </h1>
 
-      <div class="flex items-center gap-4 text-[var(--theme-gray)] mb-4 pb-4 border-b border-[var(--theme-border)]">
+      <div class="flex items-center gap-4 text-[var(--theme-gray)] mb-6 pb-6 border-b border-[var(--theme-border)]">
         {post.author && (
           <div class="flex items-center gap-3">
             {post.author.headshot ? (
