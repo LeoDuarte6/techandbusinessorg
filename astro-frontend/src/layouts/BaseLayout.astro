@@ -47,11 +47,11 @@ const {
           <a href="/about" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
             About
           </a>
-          <a href="/articles" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
-            Articles
-          </a>
           <a href="/podcast" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
             Podcast
+          </a>
+          <a href="/articles" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
+            Articles
           </a>
           <a href="/videos" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
             Reels
@@ -96,8 +96,8 @@ const {
       <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--theme-border)]">
         <div class="container-custom py-4 flex flex-col gap-2">
           <a href="/about" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">About</a>
-          <a href="/articles" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Articles</a>
           <a href="/podcast" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Podcast</a>
+          <a href="/articles" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Articles</a>
           <a href="/videos" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Reels</a>
         </div>
       </div>
@@ -155,9 +155,27 @@ const {
       }
     };
 
+      // Update icons
+      updateIcons(newTheme);
+    };
+
+    const updateIcons = (theme) => {
+      const sunIcon = document.getElementById('sun-icon');
+      const moonIcon = document.getElementById('moon-icon');
+      
+      if (theme === 'dark') {
+        sunIcon?.classList.remove('hidden');
+        moonIcon?.classList.add('hidden');
+      } else {
+        sunIcon?.classList.add('hidden');
+        moonIcon?.classList.remove('hidden');
+      }
+    };
+
     // Initialize theme
     const savedTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
+    updateIcons(savedTheme);
     
     // Set initial status bar color
     const themeColor = document.getElementById('theme-color');
