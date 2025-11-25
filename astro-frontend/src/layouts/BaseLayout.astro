@@ -1,10 +1,15 @@
 ---
+import '../styles/global.css';
+
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
 }
 
-const { title, description = 'Tech & Business - Student-run media platform covering technology, business, and finance' } = Astro.props;
+const { 
+  title = 'Tech & Business | NYC\'s finest in Tech & Business',
+  description = 'A video-first media platform providing an informed perspective on technology, artificial intelligence, and the world of business.'
+} = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -15,10 +20,10 @@ const { title, description = 'Tech & Business - Student-run media platform cover
   <title>{title}</title>
   <meta name="description" content={description}>
   
-  <!-- Open Graph -->
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
   <meta property="og:title" content={title}>
   <meta property="og:description" content={description}>
-  <meta property="og:type" content="website">
   <meta property="og:site_name" content="Tech & Business">
   
   <!-- Favicon -->
@@ -27,122 +32,156 @@ const { title, description = 'Tech & Business - Student-run media platform cover
   <!-- Preconnect to Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-
-<body class="bg-[var(--theme-bg)] text-[var(--theme-text)] min-h-screen">
-  <!-- Navigation -->
-  <nav class="border-b border-[var(--theme-border)] sticky top-0 bg-[var(--theme-bg)] z-50">
-    <div class="container-custom flex items-center justify-between py-4">
-      <!-- Logo - Compact on mobile -->
-      <a href="/" class="text-xl md:text-2xl font-semibold hover:text-[var(--theme-gray)] transition-colors">
-        Tech & Business
-      </a>
-      
-      <!-- Desktop Navigation -->
-      <div class="hidden md:flex items-center gap-8">
-        <a href="/about" class="hover:text-[var(--theme-gray)] transition-colors">About</a>
-        <a href="/articles" class="hover:text-[var(--theme-gray)] transition-colors">Articles</a>
-        <a href="/podcast" class="hover:text-[var(--theme-gray)] transition-colors">Podcast</a>
-        <a href="/videos" class="hover:text-[var(--theme-gray)] transition-colors">Reels</a>
+<body>
+  <nav class="sticky top-0 z-50 bg-[var(--theme-bg)]/90 backdrop-blur-lg border-b border-[var(--theme-border)] transition-colors duration-300">
+    <div class="container-custom">
+      <div class="flex justify-between items-center py-5">
+        <a href="/" class="flex items-center gap-2 text-2xl font-semibold tracking-tight text-[var(--theme-text)] hover:text-[var(--theme-gray)] transition-colors">
+          Tech & Business
+        </a>
         
-        <!-- Theme Toggle -->
-        <button id="theme-toggle" class="p-2 rounded-lg hover:bg-[var(--theme-gray-light)] transition-colors" aria-label="Toggle theme">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-          </svg>
-        </button>
-      </div>
+        <div class="hidden md:flex items-center gap-6 md:gap-8">
+          <a href="/about" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
+            About
+          </a>
+          <a href="/articles" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
+            Articles
+          </a>
+          <a href="/podcast" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
+            Podcast
+          </a>
+          <a href="/videos" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
+            Reels
+          </a>
+          
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="p-2 rounded-full hover:bg-[var(--theme-gray-light)] transition-colors" aria-label="Toggle Theme">
+            <!-- Sun Icon (for dark mode) -->
+            <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden text-[var(--theme-text)]"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>
+            <!-- Moon Icon (for light mode) -->
+            <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden text-[var(--theme-text)]"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
 
-      <!-- Mobile Menu Button & Theme Toggle -->
-      <div class="flex md:hidden items-center gap-2">
-        <!-- Theme Toggle (Mobile) -->
-        <button id="theme-toggle-mobile" class="p-2 rounded-lg hover:bg-[var(--theme-gray-light)] transition-colors" aria-label="Toggle theme">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-          </svg>
-        </button>
-        
-        <!-- Hamburger Button -->
-        <button id="mobile-menu-button" class="p-2 rounded-lg hover:bg-[var(--theme-gray-light)] transition-colors" aria-label="Toggle menu">
+          <a 
+            href="#subscribe" 
+            class="hidden md:inline-block bg-[var(--theme-text)] text-[var(--theme-bg)] px-4 py-2 rounded text-sm font-semibold hover:opacity-80 transition-opacity"
+          >
+            Subscribe
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 hover:bg-[var(--theme-gray-light)] rounded transition-colors touch-manipulation" aria-label="Menu" style="touch-action: manipulation;">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            <path id="menu-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            <path id="menu-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
         </button>
       </div>
-    </div>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--theme-border)]">
-      <div class="container-custom py-4 flex flex-col gap-4">
-        <a href="/about" class="py-2 hover:text-[var(--theme-gray)] transition-colors">About</a>
-        <a href="/articles" class="py-2 hover:text-[var(--theme-gray)] transition-colors">Articles</a>
-        <a href="/podcast" class="py-2 hover:text-[var(--theme-gray)] transition-colors">Podcast</a>
-        <a href="/videos" class="py-2 hover:text-[var(--theme-gray)] transition-colors">Reels</a>
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--theme-border)]">
+        <div class="container-custom py-4 flex flex-col gap-2">
+          <a href="/about" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">About</a>
+          <a href="/articles" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Articles</a>
+          <a href="/podcast" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Podcast</a>
+          <a href="/videos" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Reels</a>
+        </div>
       </div>
     </div>
   </nav>
 
-  <!-- Main Content -->
-  <main>
+  <main class="min-h-screen bg-[var(--theme-bg)] transition-colors duration-300">
     <slot />
   </main>
 
-  <!-- Footer -->
-  <footer class="border-t border-[var(--theme-border)] mt-20">
-    <div class="container-custom py-8">
-      <div class="text-center text-[var(--theme-gray)] text-sm">
-        <p>&copy; {new Date().getFullYear()} Tech & Business. All rights reserved.</p>
+  <footer id="subscribe" class="border-t border-[var(--theme-border)] section-padding-sm bg-[var(--theme-bg)] transition-colors duration-300">
+    <div class="container-custom text-center">
+      <h2 class="mb-4 text-[var(--theme-text)]">Join the Network.</h2>
+      <p class="text-[var(--theme-gray)] max-w-2xl mx-auto mb-8">
+        The intersection of technology, business, and student ambition.
+      </p>
+      
+      <form class="flex flex-col md:flex-row gap-3 max-w-md mx-auto mb-16">
+        <input 
+          type="email" 
+          placeholder="Enter your email address" 
+          required
+          class="flex-1 px-4 py-3 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded text-[var(--theme-text)] placeholder:text-[var(--theme-gray)] focus:outline-none focus:border-[var(--theme-text)]"
+        >
+        <button 
+          type="submit"
+          class="bg-[var(--theme-text)] text-[var(--theme-bg)] px-6 py-3 rounded font-semibold hover:opacity-80 transition-opacity"
+        >
+          Subscribe
+        </button>
+      </form>
+
+      <div class="text-sm text-[var(--theme-gray)]">
+        <p>&copy; 2024 Tech & Business Organization. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Mobile Menu Toggle Script -->
-  <script is:inline>
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const menuIcon = document.getElementById('menu-icon');
-    const closeIcon = document.getElementById('close-icon');
-
-    mobileMenuButton?.addEventListener('click', () => {
-      mobileMenu?.classList.toggle('hidden');
-      menuIcon?.classList.toggle('hidden');
-      closeIcon?.classList.toggle('hidden');
-    });
-
-    // Close mobile menu when clicking a link
-    const mobileLinks = mobileMenu?.querySelectorAll('a');
-    mobileLinks?.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu?.classList.add('hidden');
-        menuIcon?.classList.remove('hidden');
-        closeIcon?.classList.add('hidden');
-      });
-    });
-  </script>
-
-  <!-- Theme Toggle Script -->
-  <script is:inline>
-    // Theme toggle functionality
+  <script>
     const themeToggle = document.getElementById('theme-toggle');
-    const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+    const sunIcon = document.getElementById('sun-icon');
+    const moonIcon = document.getElementById('moon-icon');
     
-    const toggleTheme = () => {
-      const html = document.documentElement;
-      const currentTheme = html.getAttribute('data-theme') || 'dark';
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      html.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
+    // Check for saved theme preference or system preference
+    const getPreferredTheme = () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        return savedTheme;
+      }
+      return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    };
+
+    const setTheme = (theme) => {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      
+      if (theme === 'dark') {
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+      } else {
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+      }
     };
 
     // Initialize theme
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    setTheme(getPreferredTheme());
 
-    // Add event listeners
-    themeToggle?.addEventListener('click', toggleTheme);
-    themeToggleMobile?.addEventListener('click', toggleTheme);
+    // Toggle theme on click
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
+    });
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOpen = document.getElementById('menu-open');
+    const menuClose = document.getElementById('menu-close');
+
+    mobileMenuBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      mobileMenu?.classList.toggle('hidden');
+      menuOpen?.classList.toggle('hidden');
+      menuClose?.classList.toggle('hidden');
+    });
+
+    // Close menu when clicking a link
+    mobileMenu?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuOpen?.classList.remove('hidden');
+        menuClose?.classList.add('hidden');
+      });
+    });
   </script>
 </body>
 </html>
