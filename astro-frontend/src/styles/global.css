@@ -58,6 +58,16 @@ body {
   background-color: var(--theme-bg);
   color: var(--theme-text);
   transition: color 0.3s ease, background-color 0.3s ease;
+  touch-action: manipulation;
+}
+
+/* Prevent double-tap zoom on all interactive elements */
+a,
+button,
+input,
+textarea,
+select {
+  touch-action: manipulation;
 }
 
 /* Typography */
