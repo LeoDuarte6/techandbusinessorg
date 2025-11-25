@@ -19,6 +19,7 @@ const {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{title}</title>
   <meta name="description" content={description}>
+  <meta name="theme-color" content="#000000" id="theme-color">
   
   <!-- Open Graph / Social Media -->
   <meta property="og:type" content="website">
@@ -145,11 +146,23 @@ const {
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
       html.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
+      
+      // Update status bar color
+      const themeColor = document.getElementById('theme-color');
+      if (themeColor) {
+        themeColor.setAttribute('content', newTheme === 'dark' ? '#000000' : '#ffffff');
+      }
     };
 
     // Initialize theme
     const savedTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    // Set initial status bar color
+    const themeColor = document.getElementById('theme-color');
+    if (themeColor) {
+      themeColor.setAttribute('content', savedTheme === 'dark' ? '#000000' : '#ffffff');
+    }
 
     // Add event listeners
     themeToggle?.addEventListener('click', toggleTheme);
