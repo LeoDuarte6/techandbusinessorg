@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { client as sanityClient, urlFor } from '../lib/sanity';
+
+const allAuthors = await sanityClient.fetch(`
+  *[_type == "author"] {
+    name,
+    role,
+    bio,
+    headshot,
+    slug
+  }
+`);
+
+// Define desired order and filter out others (like Peter)
+const desiredOrder = ['Leo Duarte', 'Pierce', 'Joey'];
+const authors = desiredOrder
+  .map(name => allAuthors.find(a => a.name.includes(name)))
+  .filter(Boolean);
+
+---
+
+<BaseLayout title="About | Tech & Business">
+  <section class="section-padding">
+    <div class="container-custom">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="mb-8 text-[var(--theme-text)]">About Tech & Business</h1>
+        
+        <div class="prose prose-lg max-w-none mb-16">
+          <p class="text-xl text-[var(--theme-gray)] leading-relaxed">
+            Tech & Business is a student-run media platform providing an informed perspective 
+            on the real-time workings of technology, artificial intelligence, and the world of business.
+          </p>
+          
+          <p class="text-lg text-[var(--theme-gray)] mt-6">
+            We started as a newsletter and have evolved into a video-first platform, creating 
+            content that makes complex topics accessible to college students and young professionals. 
+            Our mission is to build a network where ambitious individuals can learn, connect, and grow together.
+          </p>
+        </div>
+
+        <h2 class="mb-12 text-[var(--theme-text)]">The Team</h2>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+          {authors.map((member) => (
+            <div class="text-center">
+              {member.headshot ? (
+                <img 
+                  src={urlFor(member.headshot).width(200).height(200).url()} 
+                  alt={member.name}
+                  class="w-32 h-32 mx-auto mb-4 rounded-full object-cover border border-[var(--theme-border)]"
+                />
+              ) : (
+                <div class="w-32 h-32 mx-auto mb-4 rounded-full bg-[var(--theme-gray-light)] border border-[var(--theme-border)] flex items-center justify-center text-2xl font-bold text-[var(--theme-gray)]">
+                  {member.name.charAt(0)}
+                </div>
+              )}
+              <h3 class="text-xl font-bold mb-1 text-[var(--theme-text)]">
+                <a href={`/authors/${member.slug.current}`} class="hover:underline decoration-2 underline-offset-4">
+                  {member.name}
+                </a>
+              </h3>
+              {member.role && (
+                <p class="text-sm text-[var(--theme-gray)] uppercase tracking-wider mb-3">{member.role}</p>
+              )}
+              {member.bio && (
+                <p class="text-sm text-[var(--theme-gray)] line-clamp-3">{member.bio}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-padding bg-[var(--theme-gray-light)] border-y border-[var(--theme-border)] transition-colors duration-300">
+    <div class="container-custom">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="mb-6 text-[var(--theme-text)]">Our Content</h2>
+        <div class="grid md:grid-cols-3 gap-8 text-left">
+          <div>
+            <h3 class="text-lg font-bold mb-2 text-[var(--theme-text)]">📹 Videos & Reels</h3>
+            <p class="text-sm text-[var(--theme-gray)]">
+              Quick takes on market trends, tech news, and business insights from our team.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold mb-2 text-[var(--theme-text)]">🎙️ Podcast</h3>
+            <p class="text-sm text-[var(--theme-gray)]">
+              Long-form conversations exploring the intersection of technology and business.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold mb-2 text-[var(--theme-text)]">📝 Articles</h3>
+            <p class="text-sm text-[var(--theme-gray)]">
+              In-depth analysis and commentary on the topics that matter to students.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

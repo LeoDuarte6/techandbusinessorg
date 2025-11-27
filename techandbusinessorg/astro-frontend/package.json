@@ -1,0 +1,32 @@
+{
+  "name": "astro-frontend",
+  "version": "1.0.0",
+  "description": "Tech & Business - Video-first media platform",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "keywords": [
+    "astro",
+    "tech",
+    "business",
+    "newsletter"
+  ],
+  "author": "Tech & Business Team",
+  "license": "ISC",
+  "dependencies": {
+    "@astrojs/tailwind": "^6.0.2",
+    "@astrojs/vercel": "^9.0.1",
+    "@sanity/client": "^7.13.0",
+    "@sanity/image-url": "^1.2.0",
+    "@supabase/supabase-js": "^2.84.0",
+    "astro": "^5.16.0",
+    "astro-portabletext": "^0.12.0",
+    "tailwindcss": "^3.4.18"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19"
+  }
+}

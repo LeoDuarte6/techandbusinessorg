@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { client as sanityClient, urlFor } from '../../lib/sanity';
+
+export async function getStaticPaths() {
+  const authors = await sanityClient.fetch(`
+    *[_type == "author"] {
+      _id,
+      name,
+      slug,
+      headshot,
+      bio,
+      role,
+      socialLinks
+    }
+  `);
+
+  return authors.map((author) => ({
+    params: { slug: author.slug.current },
+    props: { author },
+  }));
+}
+
+const { author } = Astro.props;
+
+// Fetch articles by this author
+const articles = await sanityClient.fetch(`
+  *[_type == "post" && author._ref == "${author._id}"] | order(publishedAt desc) {
+    title,
+    slug,
+    mainImage,
+    publishedAt,
+    excerpt,
+    "author": author->{name, slug, headshot},
+    readTime
+  }
+`);
+
+// Fetch episodes featuring this author
+const episodes = await sanityClient.fetch(`
+  *[_type == "episode" && references("${author._id}")] | order(publishedAt desc) {
+    title,
+    slug,
+    episodeNumber,
+    publishedAt,
+    coverArt,
+    "hosts": hosts[]->{name, slug},
+    "guests": guests[]->{name, slug}
+  }
+`);
+---
+
+<BaseLayout title={`${author.name} | Tech & Business`}>
+  <section class="section-padding">
+    <div class="container-custom max-w-4xl">
+      <!-- Author Header -->
+      <div class="mb-16 text-center">
+        {author.headshot && (
+          <img 
+            src={urlFor(author.headshot).width(400).height(400).url()} 
+            alt={author.name}
+            class="w-40 h-40 rounded-full mx-auto mb-6 object-cover border-4 border-[var(--theme-border)] shadow-lg"
+          />
+        )}
+        <h1 class="text-4xl md:text-5xl font-bold mb-3 text-[var(--theme-text)]">{author.name}</h1>
+        {author.role && (
+          <p class="text-xl text-[var(--theme-gray)] uppercase tracking-wide mb-6 font-medium">{author.role}</p>
+        )}
+        
+        {author.bio && (
+          <p class="text-lg text-[var(--theme-text)] max-w-2xl mx-auto mb-8 leading-relaxed">{author.bio}</p>
+        )}
+
+        <!-- Social Links -->
+        {author.socialLinks && author.socialLinks.length > 0 && (
+          <div class="flex justify-center gap-4">
+            {author.socialLinks.map((link) => (
+              <a 
+                href={link.url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="p-2 rounded-full bg-[var(--theme-bg)] border border-[var(--theme-border)] text-[var(--theme-gray)] hover:text-[var(--theme-text)] hover:border-[var(--theme-text)] transition-all"
+                aria-label={`${link.platform} profile`}
+              >
+                <span class="capitalize font-medium px-2">{link.platform}</span>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <!-- Articles Section -->
+      {articles.length > 0 && (
+        <div class="border-t border-[var(--theme-border)] pt-12 mb-16">
+          <h2 class="text-2xl font-bold mb-8 text-[var(--theme-text)] flex items-center gap-2">
+            Articles by {author.name}
+          </h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            {articles.map((article) => (
+              <ArticleCard {...article} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Episodes Section -->
+      {episodes.length > 0 && (
+        <div class="border-t border-[var(--theme-border)] pt-12">
+          <h2 class="text-2xl font-bold mb-8 text-[var(--theme-text)] flex items-center gap-2">
+            Appears On
+          </h2>
+          <div class="grid gap-6">
+            {episodes.map((episode) => (
+              <a 
+                href={`/podcast/${episode.slug.current}`}
+                class="block group bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg p-4 hover:border-[var(--theme-text)] transition-colors"
+              >
+                <div class="flex items-center gap-4">
+                  <div class="w-16 h-16 bg-[var(--theme-gray-light)] rounded flex-shrink-0 overflow-hidden">
+                    {episode.coverArt && (
+                      <img src={episode.coverArt.asset.url} alt={episode.title} class="w-full h-full object-cover" />
+                    )}
+                  </div>
+                  <div>
+                    <div class="text-xs text-[var(--theme-gray)] mb-1 uppercase tracking-wider">
+                      Episode {episode.episodeNumber}
+                    </div>
+                    <h3 class="text-lg font-bold text-[var(--theme-text)] group-hover:underline decoration-2 underline-offset-4">
+                      {episode.title}
+                    </h3>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

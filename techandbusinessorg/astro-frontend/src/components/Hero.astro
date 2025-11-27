@@ -1,0 +1,64 @@
+---
+interface Props {
+  latestContent?: {
+    type: 'video' | 'episode';
+    title: string;
+    description?: string;
+    videoUrl?: string;
+    embedCode?: string;
+  };
+}
+
+const { latestContent } = Astro.props;
+
+// Default content if no latest content is provided
+const defaultContent = {
+  type: 'video' as const,
+  title: 'The Pivot to Video.',
+  description: 'Leo, Pierce, and Joey discuss the new direction of Tech & Business and the state of student media.',
+};
+
+const content = latestContent || defaultContent;
+---
+
+<header class="section-padding border-b border-[var(--theme-border)] transition-colors duration-300">
+  <div class="container-custom">
+    <div class="max-w-4xl mx-auto text-center">
+
+      
+      <h1 class="mb-6 text-[var(--theme-text)]">
+        {content.title}
+      </h1>
+      
+      {content.description && (
+        <p class="text-lg md:text-xl text-[var(--theme-gray)] max-w-2xl mx-auto mb-12">
+          {content.description}
+        </p>
+      )}
+      
+      <div class="aspect-video bg-[var(--theme-gray-light)] rounded-lg overflow-hidden border border-[var(--theme-border)] shadow-lg transition-colors duration-300">
+        {content.type === 'video' && content.videoUrl ? (
+          <div class="w-full h-full flex items-center justify-center">
+            <div class="text-center">
+              <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-[var(--theme-text)]/10 backdrop-blur flex items-center justify-center text-[var(--theme-text)] hover:bg-[var(--theme-text)]/20 transition-colors cursor-pointer">
+                <div class="text-4xl ml-1">▶</div>
+              </div>
+              <p class="text-[var(--theme-gray)]">New Episode Coming Wednesday</p>
+            </div>
+          </div>
+        ) : content.embedCode ? (
+          <div set:html={content.embedCode} class="w-full h-full" />
+        ) : (
+          <div class="w-full h-full flex items-center justify-center">
+            <div class="text-center">
+              <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-[var(--theme-text)]/10 backdrop-blur flex items-center justify-center text-[var(--theme-text)] hover:bg-[var(--theme-text)]/20 transition-colors cursor-pointer">
+                <div class="text-4xl ml-1">▶</div>
+              </div>
+              <p class="text-[var(--theme-gray)]">New Episode Coming Wednesday</p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,167 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { client as sanityClient, urlFor } from '../../lib/sanity';
+import { PortableText } from 'astro-portabletext';
+
+export async function getStaticPaths() {
+  const episodes = await sanityClient.fetch(`*[_type == "episode"]{slug}`);
+  
+  return episodes.map((episode) => ({
+    params: { slug: episode.slug.current },
+  }));
+}
+
+const { slug } = Astro.params;
+
+const query = `*[_type == "episode" && slug.current == $slug][0]{
+  title,
+  episodeNumber,
+  publishedAt,
+  youtubeUrl,
+  spotifyEmbed,
+  appleEmbed,
+  showNotes,
+  coverArt,
+  "hosts": hosts[]->{name, slug, headshot},
+  "guests": guests[]->{name, slug, headshot}
+}`;
+
+const episode = await sanityClient.fetch(query, { slug });
+
+if (!episode) {
+  return Astro.redirect('/404');
+}
+
+const formattedDate = new Date(episode.publishedAt).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+
+// Helper to extract video ID from YouTube URL
+function getYouTubeId(url) {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+const youtubeId = getYouTubeId(episode.youtubeUrl);
+---
+
+<BaseLayout title={`Episode ${episode.episodeNumber}: ${episode.title} | Tech & Business`}>
+  <article class="section-padding">
+    <div class="container-custom max-w-4xl">
+      <!-- Header -->
+      <div class="mb-12 text-center">
+        <div class="text-[var(--theme-gray)] uppercase tracking-wider font-bold mb-4">
+          Episode {episode.episodeNumber} &bull; {formattedDate}
+        </div>
+        <h1 class="text-3xl md:text-5xl font-bold mb-8 text-[var(--theme-text)] leading-tight">
+          {episode.title}
+        </h1>
+        
+        {episode.coverArt && (
+          <img 
+            src={urlFor(episode.coverArt).width(800).height(800).url()} 
+            alt={episode.title}
+            class="w-64 h-64 mx-auto rounded-xl shadow-2xl mb-12 border border-[var(--theme-border)]"
+          />
+        )}
+      </div>
+
+      <!-- Media Embeds -->
+      <div class="space-y-8 mb-16">
+        {/* Spotify Embed - Primary Player */}
+        {episode.spotifyEmbed && (
+          <div class="w-full">
+            <div class="rounded-xl overflow-hidden shadow-lg border border-[var(--theme-border)]" set:html={episode.spotifyEmbed} />
+          </div>
+        )}
+
+        {/* YouTube Embed */}
+        {youtubeId && (
+          <div class="aspect-video w-full rounded-xl overflow-hidden shadow-lg border border-[var(--theme-border)]">
+            <iframe
+              width="100%"
+              height="100%"
+              src={`https://www.youtube.com/embed/${youtubeId}`}
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        )}
+
+        {/* Apple Podcasts Embed */}
+        {episode.appleEmbed && (
+          <div class="w-full rounded-xl overflow-hidden shadow-md border border-[var(--theme-border)]" set:html={episode.appleEmbed} />
+        )}
+      </div>
+
+      <!-- Show Notes -->
+      <div class="prose prose-lg prose-invert max-w-none mb-16">
+        <h2 class="text-[var(--theme-text)]">Show Notes</h2>
+        <div class="text-[var(--theme-gray)]">
+          <PortableText value={episode.showNotes} />
+        </div>
+      </div>
+
+      <!-- People -->
+      <div class="grid md:grid-cols-2 gap-12 border-t border-[var(--theme-border)] pt-12">
+        {episode.hosts && episode.hosts.length > 0 && (
+          <div>
+            <h3 class="text-xl font-bold mb-6 text-[var(--theme-text)]">Hosted By</h3>
+            <div class="space-y-6">
+              {episode.hosts.map((host) => (
+                <a href={`/authors/${host.slug.current}`} class="flex items-center gap-4 group">
+                  {host.headshot ? (
+                    <img 
+                      src={urlFor(host.headshot).width(100).height(100).url()} 
+                      alt={host.name}
+                      class="w-16 h-16 rounded-full object-cover border border-[var(--theme-border)]"
+                    />
+                  ) : (
+                    <div class="w-16 h-16 rounded-full bg-[var(--theme-gray-light)] flex items-center justify-center text-[var(--theme-gray)] font-bold text-xl">
+                      {host.name.charAt(0)}
+                    </div>
+                  )}
+                  <div>
+                    <div class="font-bold text-[var(--theme-text)] group-hover:underline">{host.name}</div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {episode.guests && episode.guests.length > 0 && (
+          <div>
+            <h3 class="text-xl font-bold mb-6 text-[var(--theme-text)]">Guests</h3>
+            <div class="space-y-6">
+              {episode.guests.map((guest) => (
+                <a href={`/authors/${guest.slug.current}`} class="flex items-center gap-4 group">
+                  {guest.headshot ? (
+                    <img 
+                      src={urlFor(guest.headshot).width(100).height(100).url()} 
+                      alt={guest.name}
+                      class="w-16 h-16 rounded-full object-cover border border-[var(--theme-border)]"
+                    />
+                  ) : (
+                    <div class="w-16 h-16 rounded-full bg-[var(--theme-gray-light)] flex items-center justify-center text-[var(--theme-gray)] font-bold text-xl">
+                      {guest.name.charAt(0)}
+                    </div>
+                  )}
+                  <div>
+                    <div class="font-bold text-[var(--theme-text)] group-hover:underline">{guest.name}</div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </article>
+</BaseLayout>

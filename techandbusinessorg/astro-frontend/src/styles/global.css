@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Default Dark Mode */
+  /* Default Dark Mode */
+  --theme-bg: #09090b;
+  --theme-bg-gradient: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #09090b 100%);
+  --theme-text: #ffffff;
+  --theme-accent: #ffffff;
+  --theme-border: #27272a;
+  --theme-gray: #a1a1aa;
+  --theme-gray-light: #18181b;
+  --theme-card-gradient: linear-gradient(180deg, #18181b 0%, #09090b 100%);
+
+  /* Brand Colors */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-gray-dark: #1a1a1a;
+  --color-gray-medium: #333333;
+  --color-gray-light: #666666;
+
+  /* Typography */
+  --font-sans: 'Inter', sans-serif;
+}
+
+[data-theme="light"] {
+  --theme-bg: #ffffff;
+  --theme-bg-gradient: radial-gradient(circle at 50% 0%, #f4f4f5 0%, #ffffff 100%);
+  --theme-text: #09090b;
+  --theme-accent: #09090b;
+  --theme-border: #e4e4e7;
+  --theme-gray: #71717a;
+  --theme-gray-light: #f4f4f5;
+  --theme-card-gradient: linear-gradient(180deg, #ffffff 0%, #f4f4f5 100%);
+
+  --color-gray-medium: #e5e7eb;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  transition: color 0.3s ease, background-color 0.3s ease;
+  touch-action: manipulation;
+}
+
+/* Prevent double-tap zoom on all interactive elements */
+a,
+button,
+input,
+textarea,
+select {
+  touch-action: manipulation;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-extrabold;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+h1 {
+  @apply text-5xl md:text-6xl lg:text-7xl;
+}
+
+h2 {
+  @apply text-3xl md:text-4xl lg:text-5xl;
+}
+
+h3 {
+  @apply text-2xl md:text-3xl;
+}
+
+p {
+  @apply text-base md:text-lg;
+  line-height: 1.6;
+}
+
+/* Utilities */
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.section-padding {
+  @apply py-12 md:py-16;
+}
+
+.section-padding-sm {
+  @apply py-8 md:py-12;
+}
+
+.border-custom {
+  @apply border border-tb-gray-medium;
+}
+
+/* Aspect Ratios */
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-reel {
+  aspect-ratio: 9 / 16;
+}
+
+/* Smooth Transitions */
+a,
+button {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+/* Force spacing and proper colors for PortableText blocks */
+.prose p {
+  margin-bottom: 1.25em !important;
+  margin-top: 0 !important;
+  color: var(--theme-text) !important;
+}
+
+.prose p+p {
+  margin-top: 1.25em !important;
+}
+
+/* Ensure bold text is visible */
+.prose strong,
+.prose b {
+  font-weight: 700 !important;
+  color: var(--theme-text) !important;
+}
+
+/* Fix all text colors in prose */
+.prose {
+  color: var(--theme-text) !important;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: var(--theme-text) !important;
+}
+
+.prose a {
+  color: var(--theme-text) !important;
+  text-decoration: underline;
+}
+
+.prose ul,
+.prose ol {
+  color: var(--theme-text) !important;
+}
+
+.prose li {
+  color: var(--theme-text) !important;
+}

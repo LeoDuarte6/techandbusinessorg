@@ -1,0 +1,292 @@
+---
+import '../styles/global.css';
+import AuthModal from '../components/AuthModal.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { 
+  title = 'Tech & Business | NYC\'s finest in Tech & Business',
+  description = 'A video-first media platform providing an informed perspective on technology, artificial intelligence, and the world of business.'
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta name="theme-color" content="#000000" id="theme-color">
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content={title}>
+  <meta property="og:description" content={description}>
+  <meta property="og:site_name" content="Tech & Business">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Theme initialization - MUST be inline and blocking to prevent flash -->
+  <script is:inline>
+    // This runs immediately, before the page renders
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
+</head>
+<body>
+  <nav class="relative z-50 bg-[var(--theme-bg)] border-b border-[var(--theme-border)] transition-colors duration-300">
+    <div class="container-custom">
+      <div class="flex justify-between items-center py-5">
+        <a href="/" class="flex flex-col leading-none font-semibold tracking-tight text-[var(--theme-text)] hover:text-[var(--theme-gray)] transition-colors">
+          <span class="text-xl md:text-2xl">Tech &</span>
+          <span class="text-xl md:text-2xl">Business</span>
+        </a>
+        
+        <div class="hidden md:flex items-center gap-6 md:gap-8">
+          <a href="/about" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
+            About
+          </a>
+          <a href="/podcast" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
+            Podcast
+          </a>
+          <a href="/articles" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
+            Articles
+          </a>
+          <a href="/videos" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
+            Reels
+          </a>
+          
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="p-2 rounded-full hover:bg-[var(--theme-gray-light)] transition-colors" aria-label="Toggle Theme">
+            <!-- Sun Icon (for dark mode) -->
+            <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden text-[var(--theme-text)]"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>
+            <!-- Moon Icon (for light mode) -->
+            <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden text-[var(--theme-text)]"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+
+          {/* Auth buttons temporarily hidden until authentication is fully integrated
+          <!-- Auth Button -->
+          <button 
+            id="auth-button"
+            class="hidden md:inline-block bg-[var(--theme-text)] text-[var(--theme-bg)] px-4 py-2 rounded text-sm font-semibold hover:opacity-80 transition-opacity"
+          >
+            Login
+          </button>
+          
+          <!-- User Profile (shown when logged in) -->
+          <div id="user-profile" class="hidden items-center gap-3">
+            <span id="user-email" class="text-sm text-[var(--theme-gray)]"></span>
+            <button 
+              id="logout-button"
+              class="text-sm text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+          */}
+        </div>
+
+        <!-- Mobile Menu Button & Theme Toggle -->
+        <div class="flex md:hidden items-center gap-2">
+          <!-- Theme Toggle (Mobile) -->
+          <button id="theme-toggle-mobile" class="p-2 rounded-lg hover:bg-[var(--theme-gray-light)] transition-colors" aria-label="Toggle theme">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+          </button>
+          
+          <!-- Hamburger Button -->
+          <button id="mobile-menu-btn" class="p-2 hover:bg-[var(--theme-gray-light)] rounded transition-colors touch-manipulation" aria-label="Menu" style="touch-action: manipulation;">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path id="menu-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              <path id="menu-close" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--theme-border)]">
+        <div class="container-custom py-4 flex flex-col gap-2">
+          <a href="/about" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">About</a>
+          <a href="/podcast" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Podcast</a>
+          <a href="/articles" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Articles</a>
+          <a href="/videos" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Reels</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Auth Modal -->
+  <AuthModal />
+
+  <main class="min-h-screen bg-[var(--theme-bg)] transition-colors duration-300">
+    <slot />
+  </main>
+
+  <footer id="subscribe" class="border-t border-[var(--theme-border)] section-padding-sm bg-[var(--theme-bg)] transition-colors duration-300">
+    <div class="container-custom text-center">
+      <h2 class="mb-4 text-[var(--theme-text)]">Join the Network.</h2>
+      <p class="text-[var(--theme-gray)] max-w-2xl mx-auto mb-6">
+        The intersection of technology, business, and student ambition.
+      </p>
+      
+      <form class="flex flex-col md:flex-row gap-3 max-w-md mx-auto mb-8">
+        <input 
+          type="email" 
+          placeholder="Enter your email address" 
+          required
+          class="flex-1 px-4 py-3 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded text-[var(--theme-text)] placeholder:text-[var(--theme-gray)] focus:outline-none focus:border-[var(--theme-text)]"
+        >
+        <button 
+          type="submit"
+          class="bg-[var(--theme-text)] text-[var(--theme-bg)] px-6 py-3 rounded font-semibold hover:opacity-80 transition-opacity"
+        >
+          Subscribe
+        </button>
+      </form>
+
+      <div class="text-sm text-[var(--theme-gray)] mt-4">
+        <p>&copy; 2025 techandbusiness.org</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+    
+    const toggleTheme = () => {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      
+      // Update status bar color
+      const themeColor = document.getElementById('theme-color');
+      if (themeColor) {
+        // Match --theme-bg colors: #09090b (dark) and #ffffff (light)
+        themeColor.setAttribute('content', newTheme === 'dark' ? '#09090b' : '#ffffff');
+      }
+
+      // Update icons
+      updateIcons(newTheme);
+    };
+
+    const updateIcons = (theme) => {
+      const sunIcon = document.getElementById('sun-icon');
+      const moonIcon = document.getElementById('moon-icon');
+      
+      if (theme === 'dark') {
+        sunIcon?.classList.remove('hidden');
+        moonIcon?.classList.add('hidden');
+      } else {
+        sunIcon?.classList.add('hidden');
+        moonIcon?.classList.remove('hidden');
+      }
+    };
+
+    // Initialize theme
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateIcons(savedTheme);
+    
+    // Set initial status bar color
+    const themeColor = document.getElementById('theme-color');
+    if (themeColor) {
+      themeColor.setAttribute('content', savedTheme === 'dark' ? '#09090b' : '#ffffff');
+    }
+
+    // Add event listeners
+    themeToggle?.addEventListener('click', toggleTheme);
+    themeToggleMobile?.addEventListener('click', toggleTheme);
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOpen = document.getElementById('menu-open');
+    const menuClose = document.getElementById('menu-close');
+
+    mobileMenuBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      mobileMenu?.classList.toggle('hidden');
+      menuOpen?.classList.toggle('hidden');
+      menuClose?.classList.toggle('hidden');
+    });
+
+    /* Auth state management - Commented out until authentication is fully integrated
+    // Auth state management
+    import { auth } from '../lib/supabase';
+
+    const authButton = document.getElementById('auth-button');
+    const userProfile = document.getElementById('user-profile');
+    const userEmail = document.getElementById('user-email');
+    const logoutButton = document.getElementById('logout-button');
+
+    // Check auth state on load
+    auth.getUser().then(user => {
+      if (user) {
+        authButton?.classList.add('hidden');
+        userProfile?.classList.remove('hidden');
+        userProfile?.classList.add('md:flex');
+        if (userEmail) userEmail.textContent = user.email || '';
+      } else {
+        authButton?.classList.remove('hidden');
+        authButton?.classList.add('md:inline-block');
+        userProfile?.classList.add('hidden');
+        userProfile?.classList.remove('md:flex');
+      }
+    });
+
+    // Listen for auth changes
+    auth.onAuthStateChange((user) => {
+      if (user) {
+        authButton?.classList.add('hidden');
+        authButton?.classList.remove('md:inline-block');
+        userProfile?.classList.remove('hidden');
+        userProfile?.classList.add('md:flex');
+        if (userEmail) userEmail.textContent = user.email || '';
+      } else {
+        authButton?.classList.remove('hidden');
+        authButton?.classList.add('md:inline-block');
+        userProfile?.classList.add('hidden');
+        userProfile?.classList.remove('md:flex');
+      }
+    });
+
+    // Auth button click
+    authButton?.addEventListener('click', () => {
+      (window as any).openAuthModal();
+    });
+
+    // Logout button click
+    logoutButton?.addEventListener('click', async () => {
+      await auth.signOut();
+      window.location.reload();
+    });
+    */
+
+
+    // Close menu when clicking a link
+    mobileMenu?.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuOpen?.classList.remove('hidden');
+        menuClose?.classList.add('hidden');
+      });
+    });
+  </script>
+</body>
+</html>

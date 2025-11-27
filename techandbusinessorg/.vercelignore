@@ -1,0 +1,5 @@
+migration/
+sanity-studio/
+.claude/
+*.log
+.DS_Store
