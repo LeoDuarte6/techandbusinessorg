@@ -34,6 +34,15 @@ const {
   <!-- Preconnect to Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Theme initialization - MUST be inline and blocking to prevent flash -->
+  <script is:inline>
+    // This runs immediately, before the page renders
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
 </head>
 <body>
   <nav class="relative z-50 bg-[var(--theme-bg)] border-b border-[var(--theme-border)] transition-colors duration-300">
@@ -66,6 +75,7 @@ const {
             <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden text-[var(--theme-text)]"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
 
+          {/* Auth buttons temporarily hidden until authentication is fully integrated
           <!-- Auth Button -->
           <button 
             id="auth-button"
@@ -75,7 +85,7 @@ const {
           </button>
           
           <!-- User Profile (shown when logged in) -->
-          <div id="user-profile" class="hidden md:flex items-center gap-3">
+          <div id="user-profile" class="hidden items-center gap-3">
             <span id="user-email" class="text-sm text-[var(--theme-gray)]"></span>
             <button 
               id="logout-button"
@@ -84,6 +94,7 @@ const {
               Logout
             </button>
           </div>
+          */}
         </div>
 
         <!-- Mobile Menu Button & Theme Toggle -->
@@ -215,6 +226,7 @@ const {
       menuClose?.classList.toggle('hidden');
     });
 
+    /* Auth state management - Commented out until authentication is fully integrated
     // Auth state management
     import { auth } from '../lib/supabase';
 
@@ -228,10 +240,13 @@ const {
       if (user) {
         authButton?.classList.add('hidden');
         userProfile?.classList.remove('hidden');
+        userProfile?.classList.add('md:flex');
         if (userEmail) userEmail.textContent = user.email || '';
       } else {
         authButton?.classList.remove('hidden');
+        authButton?.classList.add('md:inline-block');
         userProfile?.classList.add('hidden');
+        userProfile?.classList.remove('md:flex');
       }
     });
 
@@ -239,11 +254,15 @@ const {
     auth.onAuthStateChange((user) => {
       if (user) {
         authButton?.classList.add('hidden');
+        authButton?.classList.remove('md:inline-block');
         userProfile?.classList.remove('hidden');
+        userProfile?.classList.add('md:flex');
         if (userEmail) userEmail.textContent = user.email || '';
       } else {
         authButton?.classList.remove('hidden');
+        authButton?.classList.add('md:inline-block');
         userProfile?.classList.add('hidden');
+        userProfile?.classList.remove('md:flex');
       }
     });
 
@@ -257,6 +276,8 @@ const {
       await auth.signOut();
       window.location.reload();
     });
+    */
+
 
     // Close menu when clicking a link
     mobileMenu?.querySelectorAll('a').forEach(link => {
