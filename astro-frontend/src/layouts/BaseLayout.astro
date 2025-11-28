@@ -78,9 +78,15 @@ const {
           <!-- Auth Button -->
           <button 
             id="auth-button"
-            class="hidden md:inline-block bg-[var(--theme-text)] text-[var(--theme-bg)] px-4 py-2 rounded text-sm font-semibold hover:opacity-80 transition-opacity"
+            class="hidden md:inline-block bg-transparent text-[var(--theme-text)] px-4 py-2 rounded text-sm font-semibold hover:bg-[var(--theme-gray-light)] transition-colors"
           >
             Login
+          </button>
+          <button 
+            id="signup-button"
+            class="hidden md:inline-block bg-[var(--theme-text)] text-[var(--theme-bg)] px-4 py-2 rounded text-sm font-semibold hover:opacity-80 transition-opacity"
+          >
+            Sign Up
           </button>
           
           <!-- User Profile (shown when logged in) -->
@@ -236,12 +242,15 @@ const {
     auth.getUser().then(user => {
       if (user) {
         authButton?.classList.add('hidden');
+        signupButton?.classList.add('hidden');
         userProfile?.classList.remove('hidden');
         userProfile?.classList.add('md:flex');
         if (userEmail) userEmail.textContent = user.email || '';
       } else {
         authButton?.classList.remove('hidden');
         authButton?.classList.add('md:inline-block');
+        signupButton?.classList.remove('hidden');
+        signupButton?.classList.add('md:inline-block');
         userProfile?.classList.add('hidden');
         userProfile?.classList.remove('md:flex');
       }
@@ -252,12 +261,16 @@ const {
       if (user) {
         authButton?.classList.add('hidden');
         authButton?.classList.remove('md:inline-block');
+        signupButton?.classList.add('hidden');
+        signupButton?.classList.remove('md:inline-block');
         userProfile?.classList.remove('hidden');
         userProfile?.classList.add('md:flex');
         if (userEmail) userEmail.textContent = user.email || '';
       } else {
         authButton?.classList.remove('hidden');
         authButton?.classList.add('md:inline-block');
+        signupButton?.classList.remove('hidden');
+        signupButton?.classList.add('md:inline-block');
         userProfile?.classList.add('hidden');
         userProfile?.classList.remove('md:flex');
       }
@@ -265,7 +278,13 @@ const {
 
     // Auth button click
     authButton?.addEventListener('click', () => {
-      (window as any).openAuthModal();
+      (window as any).openAuthModal('login');
+    });
+
+    // Signup button click
+    const signupButton = document.getElementById('signup-button');
+    signupButton?.addEventListener('click', () => {
+      (window as any).openAuthModal('signup');
     });
 
     // Logout button click

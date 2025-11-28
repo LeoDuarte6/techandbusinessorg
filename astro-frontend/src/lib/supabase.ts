@@ -27,6 +27,16 @@ export const auth = {
         return { data, error };
     },
 
+    signInWithGoogle: async () => {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: window.location.origin,
+            },
+        });
+        return { data, error };
+    },
+
     signOut: async () => {
         const { error } = await supabase.auth.signOut();
         return { error };
@@ -41,6 +51,13 @@ export const auth = {
         return supabase.auth.onAuthStateChanged((event, session) => {
             callback(session?.user ?? null);
         });
+    },
+
+    resetPasswordForEmail: async (email: string) => {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + '/reset-password',
+        });
+        return { error };
     },
 };
 
