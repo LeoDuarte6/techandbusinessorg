@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "Tech & Business - Video-first media platform",
   "type": "module",
+  "engines": {
+    "node": ">=18.20.8"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "astro": "astro",
+    "deploy": "vercel --prod --yes"
   },
   "keywords": [
     "astro",

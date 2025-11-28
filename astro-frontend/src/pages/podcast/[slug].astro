@@ -41,9 +41,9 @@ const formattedDate = new Date(episode.publishedAt).toLocaleDateString('en-US', 
 // Helper to extract video ID from YouTube URL
 function getYouTubeId(url) {
   if (!url) return null;
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
   const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
+  return (match && match[7].length === 11) ? match[7] : null;
 }
 
 const youtubeId = getYouTubeId(episode.youtubeUrl);

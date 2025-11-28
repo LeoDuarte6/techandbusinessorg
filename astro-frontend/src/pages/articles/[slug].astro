@@ -82,7 +82,7 @@ const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
             {post.author.headshot ? (
               <a href={`/authors/${post.author.slug.current}`} class="block hover:opacity-80 transition-opacity">
                 <img 
-                  src={urlFor(post.author.headshot).width(100).height(100).url()} 
+                  src={urlFor(post.author.headshot).width(100).height(100).fit('crop').crop('focalpoint').url()} 
                   alt={post.author.name}
                   class="w-12 h-12 rounded-full object-cover border border-[var(--theme-border)]"
                 />
@@ -159,7 +159,7 @@ const formattedDate = new Date(post.publishedAt).toLocaleDateString('en-US', {
         <div class="mt-12 bg-[var(--theme-gray-light)] p-8 rounded-xl border border-[var(--theme-border)] flex items-start gap-6">
           {post.author.headshot && (
             <img 
-              src={urlFor(post.author.headshot).width(120).height(120).url()} 
+              src={urlFor(post.author.headshot).width(120).height(120).fit('crop').crop('focalpoint').url()} 
               alt={post.author.name}
               class="w-20 h-20 rounded-full object-cover border border-[var(--theme-border)] shadow-sm flex-shrink-0"
             />
