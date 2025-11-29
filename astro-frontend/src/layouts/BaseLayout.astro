@@ -98,6 +98,7 @@ const {
           <!-- Auth Button -->
           <button 
             id="auth-button"
+            onclick="window.openAuthModal('login'); return false;"
             class="hidden md:inline-block bg-transparent text-[var(--theme-text)] px-4 py-2 rounded text-sm font-semibold hover:bg-[var(--theme-gray-light)] transition-colors"
           >
             Login
@@ -167,7 +168,11 @@ const {
         The intersection of technology, business, and student ambition.
       </p>
       
-      <form id="footer-signup-form" class="flex flex-col md:flex-row gap-3 max-w-md mx-auto mb-8">
+      <form 
+        id="footer-signup-form" 
+        onsubmit="event.preventDefault(); window.openAuthModal('signup'); return false;"
+        class="flex flex-col md:flex-row gap-3 max-w-md mx-auto mb-8"
+      >
         <input 
           id="footer-email-input"
           type="email" 
