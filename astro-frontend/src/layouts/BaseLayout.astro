@@ -239,8 +239,15 @@ const {
     const userEmail = document.getElementById('user-email');
     const logoutButton = document.getElementById('logout-button');
 
+    // Auth button click - Attach this FIRST so it works even if auth.getUser() fails
+    authButton?.addEventListener('click', () => {
+      console.log('Login button clicked'); // Debugging
+      window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { tab: 'login' } }));
+    });
+
     // Check auth state on load
-    auth.getUser().then(user => {
+    try {
+      auth.getUser().then(user => {
       if (user) {
         authButton?.classList.add('hidden');
         signupButton?.classList.add('hidden');
@@ -257,25 +264,34 @@ const {
       }
     });
 
+    } catch (error) {
+      console.error('Error checking auth state:', error);
+    }
+
     // Listen for auth changes
-    auth.onAuthStateChange((user) => {
-      if (user) {
-        authButton?.classList.add('hidden');
-        authButton?.classList.remove('md:inline-block');
-        signupButton?.classList.add('hidden');
-        signupButton?.classList.remove('md:inline-block');
-        userProfile?.classList.remove('hidden');
-        userProfile?.classList.add('md:flex');
-        if (userEmail) userEmail.textContent = user.email || '';
-      } else {
-        authButton?.classList.remove('hidden');
-        authButton?.classList.add('md:inline-block');
-        signupButton?.classList.remove('hidden');
-        signupButton?.classList.add('md:inline-block');
-        userProfile?.classList.add('hidden');
-        userProfile?.classList.remove('md:flex');
-      }
-    });
+    try {
+      auth.onAuthStateChange((user) => {
+        // ... (same logic as before, just wrapped)
+        if (user) {
+          authButton?.classList.add('hidden');
+          authButton?.classList.remove('md:inline-block');
+          signupButton?.classList.add('hidden');
+          signupButton?.classList.remove('md:inline-block');
+          userProfile?.classList.remove('hidden');
+          userProfile?.classList.add('md:flex');
+          if (userEmail) userEmail.textContent = user.email || '';
+        } else {
+          authButton?.classList.remove('hidden');
+          authButton?.classList.add('md:inline-block');
+          signupButton?.classList.remove('hidden');
+          signupButton?.classList.add('md:inline-block');
+          userProfile?.classList.add('hidden');
+          userProfile?.classList.remove('md:flex');
+        }
+      });
+    } catch (error) {
+      console.error('Error setting up auth listener:', error);
+    }
 
     // Auth button click
     authButton?.addEventListener('click', () => {
