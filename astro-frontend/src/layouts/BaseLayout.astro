@@ -78,6 +78,7 @@ const {
           <!-- Auth Button -->
           <button 
             id="auth-button"
+            onclick="document.getElementById('auth-modal').classList.remove('hidden'); document.getElementById('login-tab').click();"
             class="hidden md:inline-block bg-transparent text-[var(--theme-text)] px-4 py-2 rounded text-sm font-semibold hover:bg-[var(--theme-gray-light)] transition-colors"
           >
             Login
