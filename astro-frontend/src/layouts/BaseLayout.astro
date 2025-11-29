@@ -78,7 +78,6 @@ const {
           <!-- Auth Button -->
           <button 
             id="auth-button"
-            onclick="document.getElementById('auth-modal').classList.remove('hidden'); document.getElementById('login-tab').click();"
             class="hidden md:inline-block bg-transparent text-[var(--theme-text)] px-4 py-2 rounded text-sm font-semibold hover:bg-[var(--theme-gray-light)] transition-colors"
           >
             Login
@@ -232,80 +231,91 @@ const {
       menuClose?.classList.toggle('hidden');
     });
 
-    // Auth state management
+    // Auth state management - Clean implementation
     import { auth } from '../lib/supabase';
 
-    const authButton = document.getElementById('auth-button');
-    const userProfile = document.getElementById('user-profile');
-    const userEmail = document.getElementById('user-email');
-    const logoutButton = document.getElementById('logout-button');
-
-    // Auth button click - Attach this FIRST so it works even if auth.getUser() fails
-    authButton?.addEventListener('click', () => {
-      console.log('Login button clicked'); // Debugging
-      window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { tab: 'login' } }));
-    });
-
-    // Check auth state on load
-    try {
-      auth.getUser().then(user => {
-      if (user) {
-        authButton?.classList.add('hidden');
-        signupButton?.classList.add('hidden');
-        userProfile?.classList.remove('hidden');
-        userProfile?.classList.add('md:flex');
-        if (userEmail) userEmail.textContent = user.email || '';
-      } else {
-        authButton?.classList.remove('hidden');
-        authButton?.classList.add('md:inline-block');
-        signupButton?.classList.remove('hidden');
-        signupButton?.classList.add('md:inline-block');
-        userProfile?.classList.add('hidden');
-        userProfile?.classList.remove('md:flex');
+    const signupButton = document.getElementById('signup-button');
+    
+    // Helper function to show modal
+    function openAuthModal(tab = 'login') {
+      const modal = document.getElementById('auth-modal');
+      const loginTab = document.getElementById('login-tab');
+      const signupTab = document.getElementById('signup-tab');
+      
+      if (modal) {
+        modal.classList.remove('hidden');
+        if (tab === 'signup' && signupTab) {
+          signupTab.click();
+        } else if (loginTab) {
+          loginTab.click();
+        }
       }
-    });
-
-    } catch (error) {
-      console.error('Error checking auth state:', error);
     }
 
-    // Listen for auth changes
-    try {
-      auth.onAuthStateChange((user) => {
-        // ... (same logic as before, just wrapped)
-        if (user) {
-          authButton?.classList.add('hidden');
-          authButton?.classList.remove('md:inline-block');
-          signupButton?.classList.add('hidden');
-          signupButton?.classList.remove('md:inline-block');
-          userProfile?.classList.remove('hidden');
-          userProfile?.classList.add('md:flex');
-          if (userEmail) userEmail.textContent = user.email || '';
-        } else {
+    // Make it globally available for easy access
+    (window as any).openAuthModal = openAuthModal;
+
+    // Set up auth button - wait for DOM to be fully ready
+    document.addEventListener('DOMContentLoaded', () => {
+      const authButton = document.getElementById('auth-button');
+      const userProfile = document.getElementById('user-profile');
+      const userEmail = document.getElementById('user-email');
+      const logoutButton = document.getElementById('logout-button');
+
+      // Auth button click handler
+      authButton?.addEventListener('click', () => {
+        openAuthModal('login');
+      });
+
+      // Logout button click handler
+      logoutButton?.addEventListener('click', async () => {
+        try {
+          await auth.signOut();
+          window.location.reload();
+        } catch (error) {
+          console.error('Logout error:', error);
+        }
+      });
+
+      // Check and update auth state
+      async function updateAuthUI() {
+        try {
+          const user = await auth.getUser();
+          
+          if (user) {
+            authButton?.classList.add('hidden');
+            signupButton?.classList.add('hidden');
+            userProfile?.classList.remove('hidden');
+            userProfile?.classList.add('md:flex');
+            if (userEmail) userEmail.textContent = user.email || '';
+          } else {
+            authButton?.classList.remove('hidden');
+            authButton?.classList.add('md:inline-block');
+            signupButton?.classList.remove('hidden');
+            signupButton?.classList.add('md:inline-block');
+            userProfile?.classList.add('hidden');
+            userProfile?.classList.remove('md:flex');
+          }
+        } catch (error) {
+          // Silently fail if auth check fails, just show login buttons
           authButton?.classList.remove('hidden');
           authButton?.classList.add('md:inline-block');
           signupButton?.classList.remove('hidden');
           signupButton?.classList.add('md:inline-block');
-          userProfile?.classList.add('hidden');
-          userProfile?.classList.remove('md:flex');
         }
-      });
-    } catch (error) {
-      console.error('Error setting up auth listener:', error);
-    }
+      }
 
-    // Auth button click
-    authButton?.addEventListener('click', () => {
-      window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { tab: 'login' } }));
-    });
+      // Initial auth check
+      updateAuthUI();
 
-    // Signup button is now a link, so no JS needed for it unless we want to intercept
-    // But user requested a "Sign Up Page", so link is correct.
-
-    // Logout button click
-    logoutButton?.addEventListener('click', async () => {
-      await auth.signOut();
-      window.location.reload();
+      // Listen for auth changes
+      try {
+        auth.onAuthStateChange(() => {
+          updateAuthUI();
+        });
+      } catch (error) {
+        console.error('Error setting up auth listener:', error);
+      }
     });
 
 
