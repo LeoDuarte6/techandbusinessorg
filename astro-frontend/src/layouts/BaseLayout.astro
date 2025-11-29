@@ -43,6 +43,26 @@ const {
       document.documentElement.setAttribute('data-theme', savedTheme);
     })();
   </script>
+  
+  <!-- Modal helper - MUST be inline and blocking -->
+  <script is:inline>
+    // Create global function to open auth modal
+    window.openAuthModal = function(tab) {
+      tab = tab || 'login';
+      var modal = document.getElementById('auth-modal');
+      var loginTab = document.getElementById('login-tab');
+      var signupTab = document.getElementById('signup-tab');
+      
+      if (modal) {
+        modal.classList.remove('hidden');
+        if (tab === 'signup' && signupTab) {
+          signupTab.click();
+        } else if (loginTab) {
+          loginTab.click();
+        }
+      }
+    };
+  </script>
 </head>
 <body>
   <nav class="relative z-50 bg-[var(--theme-bg)] border-b border-[var(--theme-border)] transition-colors duration-300">
