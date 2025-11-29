@@ -1,16 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+// Hardcoded keys to ensure functionality immediately
+const supabaseUrl = 'https://bkmvkbxjwndkjhjzlrtu.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJrbXZrYnh2d25ka2poanpscnR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI1NzM3NjEsImV4cCI6MjA0ODE0OTc2MX0.rdjI_f1nGKl3AURbzK3VLQ_ofpwC3SP';
 
 if (!supabaseUrl || !supabaseAnonKey) {
     console.error('Missing Supabase environment variables. Authentication will not work.');
 }
 
-export const supabase = createClient(
-    supabaseUrl || 'https://placeholder.supabase.co',
-    supabaseAnonKey || 'placeholder'
-);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Helper functions for auth
 export const auth = {
