@@ -183,7 +183,25 @@
   });
 
   // Open modal from global function
-  (window as any).openAuthModal = () => {
+  (window as any).openAuthModal = (tab?: 'login' | 'signup') => {
     modal?.classList.remove('hidden');
+
+    // Switch to the requested tab if specified
+    if (tab === 'signup') {
+      signupForm?.classList.remove('hidden');
+      loginForm?.classList.add('hidden');
+      signupTab?.classList.add('border-b-2', 'border-[var(--theme-text)]', 'text-[var(--theme-text)]');
+      signupTab?.classList.remove('text-[var(--theme-gray)]');
+      loginTab?.classList.remove('border-b-2', 'border-[var(--theme-text)]', 'text-[var(--theme-text)]');
+      loginTab?.classList.add('text-[var(--theme-gray)]');
+    } else {
+      // Default to login tab
+      loginForm?.classList.remove('hidden');
+      signupForm?.classList.add('hidden');
+      loginTab?.classList.add('border-b-2', 'border-[var(--theme-text)]', 'text-[var(--theme-text)]');
+      loginTab?.classList.remove('text-[var(--theme-gray)]');
+      signupTab?.classList.remove('border-b-2', 'border-[var(--theme-text)]', 'text-[var(--theme-text)]');
+      signupTab?.classList.add('text-[var(--theme-gray)]');
+    }
   };
 </script>

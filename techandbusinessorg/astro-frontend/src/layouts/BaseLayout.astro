@@ -75,26 +75,24 @@ const {
             <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden text-[var(--theme-text)]"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
 
-          {/* Auth buttons temporarily hidden until authentication is fully integrated
           <!-- Auth Button -->
-          <button 
+          <button
             id="auth-button"
             class="hidden md:inline-block bg-[var(--theme-text)] text-[var(--theme-bg)] px-4 py-2 rounded text-sm font-semibold hover:opacity-80 transition-opacity"
           >
             Login
           </button>
-          
+
           <!-- User Profile (shown when logged in) -->
           <div id="user-profile" class="hidden items-center gap-3">
             <span id="user-email" class="text-sm text-[var(--theme-gray)]"></span>
-            <button 
+            <button
               id="logout-button"
               class="text-sm text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors"
             >
               Logout
             </button>
           </div>
-          */}
         </div>
 
         <!-- Mobile Menu Button & Theme Toggle -->
@@ -142,14 +140,15 @@ const {
         The intersection of technology, business, and student ambition.
       </p>
       
-      <form class="flex flex-col md:flex-row gap-3 max-w-md mx-auto mb-8">
-        <input 
-          type="email" 
-          placeholder="Enter your email address" 
+      <form id="footer-subscribe-form" class="flex flex-col md:flex-row gap-3 max-w-md mx-auto mb-8">
+        <input
+          type="email"
+          id="footer-email"
+          placeholder="Enter your email address"
           required
           class="flex-1 px-4 py-3 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded text-[var(--theme-text)] placeholder:text-[var(--theme-gray)] focus:outline-none focus:border-[var(--theme-text)]"
         >
-        <button 
+        <button
           type="submit"
           class="bg-[var(--theme-text)] text-[var(--theme-bg)] px-6 py-3 rounded font-semibold hover:opacity-80 transition-opacity"
         >
@@ -226,7 +225,6 @@ const {
       menuClose?.classList.toggle('hidden');
     });
 
-    /* Auth state management - Commented out until authentication is fully integrated
     // Auth state management
     import { auth } from '../lib/supabase';
 
@@ -276,8 +274,26 @@ const {
       await auth.signOut();
       window.location.reload();
     });
-    */
 
+    // Footer subscribe form - open signup modal with email pre-filled
+    const footerForm = document.getElementById('footer-subscribe-form');
+    const footerEmail = document.getElementById('footer-email') as HTMLInputElement;
+
+    footerForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = footerEmail?.value || '';
+
+      // Open auth modal and switch to signup tab
+      (window as any).openAuthModal('signup');
+
+      // Pre-fill the email in the signup form
+      setTimeout(() => {
+        const signupEmailInput = document.getElementById('signup-email') as HTMLInputElement;
+        if (signupEmailInput && email) {
+          signupEmailInput.value = email;
+        }
+      }, 100);
+    });
 
     // Close menu when clicking a link
     mobileMenu?.querySelectorAll('a').forEach(link => {
