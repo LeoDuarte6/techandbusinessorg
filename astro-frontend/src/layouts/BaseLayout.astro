@@ -147,8 +147,9 @@ const {
         The intersection of technology, business, and student ambition.
       </p>
       
-      <form class="flex flex-col md:flex-row gap-3 max-w-md mx-auto mb-8">
+      <form id="footer-signup-form" class="flex flex-col md:flex-row gap-3 max-w-md mx-auto mb-8">
         <input 
+          id="footer-email-input"
           type="email" 
           placeholder="Enter your email address" 
           required
@@ -243,9 +244,20 @@ const {
       const userEmail = document.getElementById('user-email');
       const logoutButton = document.getElementById('logout-button');
 
-      // Auth button click - dispatch event that AuthModal is listening for
+      // Auth button click - use global function for reliability
       authButton?.addEventListener('click', () => {
-        window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { tab: 'login' } }));
+        if (typeof (window as any).openAuthModal === 'function') {
+          (window as any).openAuthModal('login');
+        }
+      });
+
+      // Footer signup form - open signup modal
+      const footerForm = document.getElementById('footer-signup-form');
+      footerForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (typeof (window as any).openAuthModal === 'function') {
+          (window as any).openAuthModal('signup');
+        }
       });
 
       // Logout button click handler
