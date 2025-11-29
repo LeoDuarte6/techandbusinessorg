@@ -231,30 +231,11 @@ const {
       menuClose?.classList.toggle('hidden');
     });
 
-    // Auth state management - Clean implementation
+    // Auth state management
     import { auth } from '../lib/supabase';
 
     const signupButton = document.getElementById('signup-button');
     
-    // Helper function to show modal
-    function openAuthModal(tab = 'login') {
-      const modal = document.getElementById('auth-modal');
-      const loginTab = document.getElementById('login-tab');
-      const signupTab = document.getElementById('signup-tab');
-      
-      if (modal) {
-        modal.classList.remove('hidden');
-        if (tab === 'signup' && signupTab) {
-          signupTab.click();
-        } else if (loginTab) {
-          loginTab.click();
-        }
-      }
-    }
-
-    // Make it globally available for easy access
-    (window as any).openAuthModal = openAuthModal;
-
     // Set up auth button - wait for DOM to be fully ready
     document.addEventListener('DOMContentLoaded', () => {
       const authButton = document.getElementById('auth-button');
@@ -262,9 +243,9 @@ const {
       const userEmail = document.getElementById('user-email');
       const logoutButton = document.getElementById('logout-button');
 
-      // Auth button click handler
+      // Auth button click - dispatch event that AuthModal is listening for
       authButton?.addEventListener('click', () => {
-        openAuthModal('login');
+        window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { tab: 'login' } }));
       });
 
       // Logout button click handler
@@ -277,7 +258,7 @@ const {
         }
       });
 
-      // Check and update auth state
+      // Update UI based on auth state
       async function updateAuthUI() {
         try {
           const user = await auth.getUser();
@@ -297,7 +278,7 @@ const {
             userProfile?.classList.remove('md:flex');
           }
         } catch (error) {
-          // Silently fail if auth check fails, just show login buttons
+          // Show login buttons if auth check fails
           authButton?.classList.remove('hidden');
           authButton?.classList.add('md:inline-block');
           signupButton?.classList.remove('hidden');
