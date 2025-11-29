@@ -210,14 +210,20 @@
     }
   });
 
-  // Open modal from global function
-  (window as any).openAuthModal = (tab = 'login') => {
+  // Open modal from custom event
+  window.addEventListener('open-auth-modal', ((e: CustomEvent) => {
     modal?.classList.remove('hidden');
+    const tab = e.detail?.tab || 'login';
     if (tab === 'signup') {
       signupTab?.click();
     } else {
       loginTab?.click();
     }
+  }) as EventListener);
+
+  // Keep global function for backward compatibility/console use
+  (window as any).openAuthModal = (tab = 'login') => {
+    window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { tab } }));
   };
 
   // Forgot password

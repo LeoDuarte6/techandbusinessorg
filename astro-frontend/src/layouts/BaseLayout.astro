@@ -82,12 +82,13 @@ const {
           >
             Login
           </button>
-          <button 
+          <a 
+            href="/signup"
             id="signup-button"
             class="hidden md:inline-block bg-[var(--theme-text)] text-[var(--theme-bg)] px-4 py-2 rounded text-sm font-semibold hover:opacity-80 transition-opacity"
           >
             Sign Up
-          </button>
+          </a>
           
           <!-- User Profile (shown when logged in) -->
           <div id="user-profile" class="hidden items-center gap-3">
@@ -278,14 +279,11 @@ const {
 
     // Auth button click
     authButton?.addEventListener('click', () => {
-      (window as any).openAuthModal('login');
+      window.dispatchEvent(new CustomEvent('open-auth-modal', { detail: { tab: 'login' } }));
     });
 
-    // Signup button click
-    const signupButton = document.getElementById('signup-button');
-    signupButton?.addEventListener('click', () => {
-      (window as any).openAuthModal('signup');
-    });
+    // Signup button is now a link, so no JS needed for it unless we want to intercept
+    // But user requested a "Sign Up Page", so link is correct.
 
     // Logout button click
     logoutButton?.addEventListener('click', async () => {
