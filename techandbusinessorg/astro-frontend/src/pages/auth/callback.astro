@@ -1,0 +1,80 @@
+---
+// OAuth Callback Handler
+// This page handles the redirect from Google OAuth
+---
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signing in...</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #000;
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .loader {
+      text-align: center;
+    }
+    .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top-color: #fff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader">
+    <div class="spinner"></div>
+    <p>Signing you in...</p>
+  </div>
+
+  <script>
+    import { supabase } from '../../lib/supabase';
+
+    // Handle the OAuth callback
+    async function handleCallback() {
+      try {
+        // Supabase automatically handles the OAuth callback
+        // The session is already set in the URL hash parameters
+        const { data, error } = await supabase.auth.getSession();
+
+        if (error) {
+          console.error('Auth callback error:', error);
+          // Redirect to home with error
+          window.location.href = '/?auth_error=' + encodeURIComponent(error.message);
+          return;
+        }
+
+        if (data.session) {
+          // Successfully authenticated, redirect to home
+          window.location.href = '/';
+        } else {
+          // No session found, redirect to home
+          window.location.href = '/';
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
+        window.location.href = '/';
+      }
+    }
+
+    // Run the callback handler
+    handleCallback();
+  </script>
+</body>
+</html>
