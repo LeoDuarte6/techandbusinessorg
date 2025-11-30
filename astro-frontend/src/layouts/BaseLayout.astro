@@ -83,10 +83,7 @@ const {
           <a href="/articles" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
             Articles
           </a>
-          <a href="/videos" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
-            Reels
-          </a>
-          
+
           <!-- Theme Toggle -->
           <button id="theme-toggle" class="p-2 rounded-full hover:bg-[var(--theme-gray-light)] transition-colors" aria-label="Toggle Theme">
             <!-- Sun Icon (for dark mode) -->
@@ -96,21 +93,14 @@ const {
           </button>
 
           <!-- Auth Button -->
-          <button 
+          <button
             id="auth-button"
             onclick="window.openAuthModal('login'); return false;"
-            class="hidden md:inline-block bg-transparent text-[var(--theme-text)] px-4 py-2 rounded text-sm font-semibold hover:bg-[var(--theme-gray-light)] transition-colors"
-          >
-            Login
-          </button>
-          <a 
-            href="/signup"
-            id="signup-button"
             class="hidden md:inline-block bg-[var(--theme-text)] text-[var(--theme-bg)] px-4 py-2 rounded text-sm font-semibold hover:opacity-80 transition-opacity"
           >
-            Sign Up
-          </a>
-          
+            Sign In
+          </button>
+
           <!-- User Profile (shown when logged in) -->
           <div id="user-profile" class="hidden items-center gap-3">
             <span id="user-email" class="text-sm text-[var(--theme-gray)]"></span>
@@ -148,7 +138,6 @@ const {
           <a href="/about" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">About</a>
           <a href="/podcast" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Podcast</a>
           <a href="/articles" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Articles</a>
-          <a href="/videos" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Reels</a>
         </div>
       </div>
     </div>
@@ -260,8 +249,6 @@ const {
     // Auth state management
     import { auth } from '../lib/supabase';
 
-    const signupButton = document.getElementById('signup-button');
-    
     // Set up auth button - wait for DOM to be fully ready
     document.addEventListener('DOMContentLoaded', () => {
       const authButton = document.getElementById('auth-button');
@@ -302,24 +289,19 @@ const {
           
           if (user) {
             authButton?.classList.add('hidden');
-            signupButton?.classList.add('hidden');
             userProfile?.classList.remove('hidden');
             userProfile?.classList.add('md:flex');
             if (userEmail) userEmail.textContent = user.email || '';
           } else {
             authButton?.classList.remove('hidden');
             authButton?.classList.add('md:inline-block');
-            signupButton?.classList.remove('hidden');
-            signupButton?.classList.add('md:inline-block');
             userProfile?.classList.add('hidden');
             userProfile?.classList.remove('md:flex');
           }
         } catch (error) {
-          // Show login buttons if auth check fails
+          // Show login button if auth check fails
           authButton?.classList.remove('hidden');
           authButton?.classList.add('md:inline-block');
-          signupButton?.classList.remove('hidden');
-          signupButton?.classList.add('md:inline-block');
         }
       }
 

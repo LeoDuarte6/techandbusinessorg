@@ -1,38 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import VideoCard from '../components/VideoCard.astro';
 import ArticleCard from '../components/ArticleCard.astro';
-import { getAllVideos, getAllPosts } from '../lib/sanity';
+import { getAllPosts } from '../lib/sanity';
 
 // Fetch real data from Sanity
-const videos = await getAllVideos(6);
 const posts = await getAllPosts(6);
-
-// Placeholder videos (since we don't have videos in Sanity yet)
-const placeholderVideos = [
-  {
-    title: 'Market Analysis',
-    videoUrl: '#',
-    platform: 'TikTok',
-    category: 'Finance',
-    anchor: { name: 'Joey', slug: { current: 'joey' } }
-  },
-  {
-    title: 'Tech Trends 2024',
-    videoUrl: '#',
-    platform: 'Instagram',
-    category: 'Technology',
-    anchor: { name: 'Pierce', slug: { current: 'pierce' } }
-  },
-  {
-    title: "Founder's Log",
-    videoUrl: '#',
-    platform: 'TikTok',
-    category: 'Entrepreneurship',
-    anchor: { name: 'Leo', slug: { current: 'leo' } }
-  },
-];
 ---
 
 <BaseLayout>
@@ -62,27 +35,6 @@ const placeholderVideos = [
         ) : (
           <p class="text-[var(--theme-gray)]">No articles yet. Check back soon!</p>
         )}
-      </div>
-    </div>
-  </section>
-
-  <!-- Quick Takes / Reels Section -->
-  <section class="section-padding">
-    <div class="container-custom">
-      <div class="flex justify-between items-end mb-12">
-        <h2 class="text-[var(--theme-text)]">Quick Takes</h2>
-        <a 
-          href="/videos" 
-          class="text-sm font-semibold border-b border-[var(--theme-text)] pb-1 text-[var(--theme-text)] hover:text-[var(--theme-gray)] hover:border-[var(--theme-gray)] transition-colors"
-        >
-          View All Videos →
-        </a>
-      </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {placeholderVideos.map((video) => (
-          <VideoCard {...video} />
-        ))}
       </div>
     </div>
   </section>
