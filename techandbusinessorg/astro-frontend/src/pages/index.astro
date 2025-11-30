@@ -66,27 +66,6 @@ const placeholderVideos = [
     </div>
   </section>
 
-  <!-- Quick Takes / Reels Section -->
-  <section class="section-padding">
-    <div class="container-custom">
-      <div class="flex justify-between items-end mb-12">
-        <h2 class="text-[var(--theme-text)]">Quick Takes</h2>
-        <a 
-          href="/videos" 
-          class="text-sm font-semibold border-b border-[var(--theme-text)] pb-1 text-[var(--theme-text)] hover:text-[var(--theme-gray)] hover:border-[var(--theme-gray)] transition-colors"
-        >
-          View All Videos →
-        </a>
-      </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {placeholderVideos.map((video) => (
-          <VideoCard {...video} />
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!-- Mission Statement -->
   <section class="section-padding">
     <div class="container-custom">
