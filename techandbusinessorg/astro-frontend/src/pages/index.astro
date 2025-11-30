@@ -1,38 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import VideoCard from '../components/VideoCard.astro';
 import ArticleCard from '../components/ArticleCard.astro';
-import { getAllVideos, getAllPosts } from '../lib/sanity';
+import { getAllPosts } from '../lib/sanity';
 
 // Fetch real data from Sanity
-const videos = await getAllVideos(6);
 const posts = await getAllPosts(6);
-
-// Placeholder videos (since we don't have videos in Sanity yet)
-const placeholderVideos = [
-  {
-    title: 'Market Analysis',
-    videoUrl: '#',
-    platform: 'TikTok',
-    category: 'Finance',
-    anchor: { name: 'Joey', slug: { current: 'joey' } }
-  },
-  {
-    title: 'Tech Trends 2024',
-    videoUrl: '#',
-    platform: 'Instagram',
-    category: 'Technology',
-    anchor: { name: 'Pierce', slug: { current: 'pierce' } }
-  },
-  {
-    title: "Founder's Log",
-    videoUrl: '#',
-    platform: 'TikTok',
-    category: 'Entrepreneurship',
-    anchor: { name: 'Leo', slug: { current: 'leo' } }
-  },
-];
 ---
 
 <BaseLayout>

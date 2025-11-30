@@ -3,9 +3,9 @@
 ---
 
 <div id="auth-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
-  <div class="bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl">
+  <div class="bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl relative">
     <!-- Close Button -->
-    <button 
+    <button
       id="close-modal"
       class="absolute top-4 right-4 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors"
       aria-label="Close"
@@ -15,53 +15,20 @@
       </svg>
     </button>
 
-    <!-- Auth Tabs -->
+    <!-- Modal Title -->
     <div class="mb-6">
-      <div class="flex gap-4 border-b border-[var(--theme-border)]">
-        <button
-          id="login-tab"
-          class="tab-button pb-3 px-4 font-bold text-[var(--theme-text)] border-b-2 border-[var(--theme-text)]"
-        >
-          Sign In
-        </button>
-        <button
-          id="signup-tab"
-          class="tab-button pb-3 px-4 font-bold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors"
-        >
-          Sign Up
-        </button>
-      </div>
+      <h2 id="modal-title" class="text-2xl font-bold text-[var(--theme-text)]">Sign In</h2>
+      <p class="text-sm text-[var(--theme-gray)] mt-1">Continue to Tech & Business</p>
     </div>
 
-    <!-- Login Form -->
-    <form id="login-form" class="space-y-4">
-      <!-- Google Sign In Button -->
-      <button
-        type="button"
-        id="google-login-btn"
-        class="w-full py-3 px-4 bg-white text-gray-800 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors flex items-center justify-center gap-3"
-      >
-        <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-          <path fill="none" d="M0 0h48v48H0z"/>
-        </svg>
-        Continue with Google
-      </button>
-
-      <div class="relative flex items-center gap-2 my-4">
-        <div class="flex-1 border-t border-[var(--theme-border)]"></div>
-        <span class="text-xs text-[var(--theme-gray)]">OR</span>
-        <div class="flex-1 border-t border-[var(--theme-border)]"></div>
-      </div>
-
+    <!-- Unified Auth Form -->
+    <form id="auth-form" class="space-y-4">
+      <!-- Email/Password Fields (Primary) -->
       <div>
         <label class="block text-sm font-medium text-[var(--theme-text)] mb-2">Email</label>
         <input
           type="email"
-          id="login-email"
+          id="auth-email"
           required
           class="w-full px-4 py-3 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg text-[var(--theme-text)] focus:outline-none focus:border-[var(--theme-text)] transition-colors"
           placeholder="you@example.com"
@@ -71,73 +38,57 @@
         <label class="block text-sm font-medium text-[var(--theme-text)] mb-2">Password</label>
         <input
           type="password"
-          id="login-password"
-          required
-          class="w-full px-4 py-3 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg text-[var(--theme-text)] focus:outline-none focus:border-[var(--theme-text)] transition-colors"
-          placeholder="••••••••"
-        />
-      </div>
-      <div id="login-error" class="hidden text-sm text-red-500"></div>
-      <button
-        type="submit"
-        class="w-full py-3 bg-[var(--theme-text)] text-[var(--theme-bg)] font-bold rounded-lg hover:opacity-90 transition-opacity"
-      >
-        Sign In
-      </button>
-    </form>
-
-    <!-- Signup Form (Hidden by default) -->
-    <form id="signup-form" class="hidden space-y-4">
-      <!-- Google Sign In Button -->
-      <button
-        type="button"
-        id="google-signup-btn"
-        class="w-full py-3 px-4 bg-white text-gray-800 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors flex items-center justify-center gap-3"
-      >
-        <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-          <path fill="none" d="M0 0h48v48H0z"/>
-        </svg>
-        Continue with Google
-      </button>
-
-      <div class="relative flex items-center gap-2 my-4">
-        <div class="flex-1 border-t border-[var(--theme-border)]"></div>
-        <span class="text-xs text-[var(--theme-gray)]">OR</span>
-        <div class="flex-1 border-t border-[var(--theme-border)]"></div>
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium text-[var(--theme-text)] mb-2">Email</label>
-        <input
-          type="email"
-          id="signup-email"
-          required
-          class="w-full px-4 py-3 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg text-[var(--theme-text)] focus:outline-none focus:border-[var(--theme-text)] transition-colors"
-          placeholder="you@example.com"
-        />
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-[var(--theme-text)] mb-2">Password</label>
-        <input
-          type="password"
-          id="signup-password"
+          id="auth-password"
           required
           minlength="6"
           class="w-full px-4 py-3 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg text-[var(--theme-text)] focus:outline-none focus:border-[var(--theme-text)] transition-colors"
           placeholder="••••••••"
         />
-        <p class="text-xs text-[var(--theme-gray)] mt-1">Minimum 6 characters</p>
+        <p id="password-hint" class="text-xs text-[var(--theme-gray)] mt-1 hidden">Minimum 6 characters</p>
       </div>
-      <div id="signup-error" class="hidden text-sm text-red-500"></div>
+
+      <div id="auth-error" class="hidden text-sm text-red-500"></div>
+
       <button
         type="submit"
+        id="auth-submit-btn"
         class="w-full py-3 bg-[var(--theme-text)] text-[var(--theme-bg)] font-bold rounded-lg hover:opacity-90 transition-opacity"
       >
-        Create Account
+        Sign In
+      </button>
+
+      <!-- Toggle between signin/signup -->
+      <div class="text-center">
+        <button
+          type="button"
+          id="toggle-mode"
+          class="text-sm text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors"
+        >
+          Don't have an account? <span class="font-semibold">Sign up</span>
+        </button>
+      </div>
+
+      <!-- OR Divider -->
+      <div class="relative flex items-center gap-2 my-4">
+        <div class="flex-1 border-t border-[var(--theme-border)]"></div>
+        <span class="text-xs text-[var(--theme-gray)]">OR</span>
+        <div class="flex-1 border-t border-[var(--theme-border)]"></div>
+      </div>
+
+      <!-- Google Sign In Button (Secondary) -->
+      <button
+        type="button"
+        id="google-auth-btn"
+        class="w-full py-3 px-4 bg-white text-gray-800 font-semibold rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors flex items-center justify-center gap-3"
+      >
+        <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          <path fill="none" d="M0 0h48v48H0z"/>
+        </svg>
+        Continue with Google
       </button>
     </form>
   </div>
@@ -148,55 +99,49 @@
 
   const modal = document.getElementById('auth-modal');
   const closeBtn = document.getElementById('close-modal');
-  const loginTab = document.getElementById('login-tab');
-  const signupTab = document.getElementById('signup-tab');
-  const loginForm = document.getElementById('login-form') as HTMLFormElement;
-  const signupForm = document.getElementById('signup-form') as HTMLFormElement;
-  const loginError = document.getElementById('login-error');
-  const signupError = document.getElementById('signup-error');
-  const googleLoginBtn = document.getElementById('google-login-btn');
-  const googleSignupBtn = document.getElementById('google-signup-btn');
+  const authForm = document.getElementById('auth-form') as HTMLFormElement;
+  const authError = document.getElementById('auth-error');
+  const googleAuthBtn = document.getElementById('google-auth-btn');
+  const toggleModeBtn = document.getElementById('toggle-mode');
+  const modalTitle = document.getElementById('modal-title');
+  const authSubmitBtn = document.getElementById('auth-submit-btn');
+  const passwordHint = document.getElementById('password-hint');
 
-  // Google Sign In handlers
-  googleLoginBtn?.addEventListener('click', async () => {
+  // Track current mode (signin or signup)
+  let isSignupMode = false;
+
+  // Toggle between signin and signup modes
+  toggleModeBtn?.addEventListener('click', () => {
+    isSignupMode = !isSignupMode;
+
+    if (isSignupMode) {
+      // Switch to signup mode
+      if (modalTitle) modalTitle.textContent = 'Sign Up';
+      if (authSubmitBtn) authSubmitBtn.textContent = 'Create Account';
+      if (toggleModeBtn) toggleModeBtn.innerHTML = 'Already have an account? <span class="font-semibold">Sign in</span>';
+      passwordHint?.classList.remove('hidden');
+    } else {
+      // Switch to signin mode
+      if (modalTitle) modalTitle.textContent = 'Sign In';
+      if (authSubmitBtn) authSubmitBtn.textContent = 'Sign In';
+      if (toggleModeBtn) toggleModeBtn.innerHTML = 'Don\'t have an account? <span class="font-semibold">Sign up</span>';
+      passwordHint?.classList.add('hidden');
+    }
+
+    // Clear any errors
+    authError?.classList.add('hidden');
+  });
+
+  // Google authentication
+  googleAuthBtn?.addEventListener('click', async () => {
     const { error } = await auth.signInWithGoogle();
     if (error) {
-      console.error('Google sign-in error:', error);
-      if (loginError) {
-        loginError.textContent = error.message;
-        loginError.classList.remove('hidden');
+      console.error('Google authentication error:', error);
+      if (authError) {
+        authError.textContent = error.message;
+        authError.classList.remove('hidden');
       }
     }
-  });
-
-  googleSignupBtn?.addEventListener('click', async () => {
-    const { error } = await auth.signInWithGoogle();
-    if (error) {
-      console.error('Google sign-in error:', error);
-      if (signupError) {
-        signupError.textContent = error.message;
-        signupError.classList.remove('hidden');
-      }
-    }
-  });
-
-  // Tab switching
-  loginTab?.addEventListener('click', () => {
-    loginForm?.classList.remove('hidden');
-    signupForm?.classList.add('hidden');
-    loginTab.classList.add('border-b-2', 'border-[var(--theme-text)]', 'text-[var(--theme-text)]');
-    loginTab.classList.remove('text-[var(--theme-gray)]');
-    signupTab?.classList.remove('border-b-2', 'border-[var(--theme-text)]', 'text-[var(--theme-text)]');
-    signupTab?.classList.add('text-[var(--theme-gray)]');
-  });
-
-  signupTab?.addEventListener('click', () => {
-    signupForm?.classList.remove('hidden');
-    loginForm?.classList.add('hidden');
-    signupTab.classList.add('border-b-2', 'border-[var(--theme-text)]', 'text-[var(--theme-text)]');
-    signupTab.classList.remove('text-[var(--theme-gray)]');
-    loginTab?.classList.remove('border-b-2', 'border-[var(--theme-text)]', 'text-[var(--theme-text)]');
-    loginTab?.classList.add('text-[var(--theme-gray)]');
   });
 
   // Close modal
@@ -210,67 +155,67 @@
     }
   });
 
-  // Login form
-  loginForm?.addEventListener('submit', async (e) => {
+  // Handle form submission
+  authForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const email = (document.getElementById('login-email') as HTMLInputElement).value;
-    const password = (document.getElementById('login-password') as HTMLInputElement).value;
+    const email = (document.getElementById('auth-email') as HTMLInputElement).value;
+    const password = (document.getElementById('auth-password') as HTMLInputElement).value;
 
-    const { error } = await auth.signIn(email, password);
-    
-    if (error) {
-      if (loginError) {
-        loginError.textContent = error.message;
-        loginError.classList.remove('hidden');
+    if (isSignupMode) {
+      // Signup mode
+      const { error } = await auth.signUp(email, password);
+
+      if (error) {
+        if (authError) {
+          authError.textContent = error.message;
+          authError.classList.remove('hidden', 'text-green-500');
+          authError.classList.add('text-red-500');
+        }
+      } else {
+        if (authError) {
+          authError.textContent = 'Check your email to confirm your account!';
+          authError.classList.remove('hidden', 'text-red-500');
+          authError.classList.add('text-green-500');
+        }
       }
     } else {
-      modal?.classList.add('hidden');
-      window.location.reload();
-    }
-  });
+      // Signin mode
+      const { error } = await auth.signIn(email, password);
 
-  // Signup form
-  signupForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = (document.getElementById('signup-email') as HTMLInputElement).value;
-    const password = (document.getElementById('signup-password') as HTMLInputElement).value;
-
-    const { error } = await auth.signUp(email, password);
-    
-    if (error) {
-      if (signupError) {
-        signupError.textContent = error.message;
-        signupError.classList.remove('hidden');
-      }
-    } else {
-      if (signupError) {
-        signupError.textContent = 'Check your email to confirm your account!';
-        signupError.classList.remove('hidden', 'text-red-500');
-        signupError.classList.add('text-green-500');
+      if (error) {
+        if (authError) {
+          authError.textContent = error.message;
+          authError.classList.remove('hidden');
+        }
+      } else {
+        modal?.classList.add('hidden');
+        window.location.reload();
       }
     }
   });
 
   // Open modal from global function
-  (window as any).openAuthModal = (tab?: 'login' | 'signup') => {
+  (window as any).openAuthModal = (mode?: 'login' | 'signup') => {
     modal?.classList.remove('hidden');
 
-    // Switch to the requested tab if specified
-    if (tab === 'signup') {
-      signupForm?.classList.remove('hidden');
-      loginForm?.classList.add('hidden');
-      signupTab?.classList.add('border-b-2', 'border-[var(--theme-text)]', 'text-[var(--theme-text)]');
-      signupTab?.classList.remove('text-[var(--theme-gray)]');
-      loginTab?.classList.remove('border-b-2', 'border-[var(--theme-text)]', 'text-[var(--theme-text)]');
-      loginTab?.classList.add('text-[var(--theme-gray)]');
+    // Set the mode based on parameter
+    if (mode === 'signup') {
+      isSignupMode = true;
+      if (modalTitle) modalTitle.textContent = 'Sign Up';
+      if (authSubmitBtn) authSubmitBtn.textContent = 'Create Account';
+      if (toggleModeBtn) toggleModeBtn.innerHTML = 'Already have an account? <span class="font-semibold">Sign in</span>';
+      passwordHint?.classList.remove('hidden');
     } else {
-      // Default to login tab
-      loginForm?.classList.remove('hidden');
-      signupForm?.classList.add('hidden');
-      loginTab?.classList.add('border-b-2', 'border-[var(--theme-text)]', 'text-[var(--theme-text)]');
-      loginTab?.classList.remove('text-[var(--theme-gray)]');
-      signupTab?.classList.remove('border-b-2', 'border-[var(--theme-text)]', 'text-[var(--theme-text)]');
-      signupTab?.classList.add('text-[var(--theme-gray)]');
+      // Default to signin mode
+      isSignupMode = false;
+      if (modalTitle) modalTitle.textContent = 'Sign In';
+      if (authSubmitBtn) authSubmitBtn.textContent = 'Sign In';
+      if (toggleModeBtn) toggleModeBtn.innerHTML = 'Don\'t have an account? <span class="font-semibold">Sign up</span>';
+      passwordHint?.classList.add('hidden');
     }
+
+    // Clear any errors and form
+    authError?.classList.add('hidden');
+    authForm?.reset();
   };
 </script>

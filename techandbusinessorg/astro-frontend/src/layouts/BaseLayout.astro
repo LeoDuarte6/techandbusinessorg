@@ -279,14 +279,14 @@ const {
       e.preventDefault();
       const email = footerEmail?.value || '';
 
-      // Open auth modal and switch to signup tab
+      // Open auth modal in signup mode
       (window as any).openAuthModal('signup');
 
-      // Pre-fill the email in the signup form
+      // Pre-fill the email in the auth form
       setTimeout(() => {
-        const signupEmailInput = document.getElementById('signup-email') as HTMLInputElement;
-        if (signupEmailInput && email) {
-          signupEmailInput.value = email;
+        const authEmailInput = document.getElementById('auth-email') as HTMLInputElement;
+        if (authEmailInput && email) {
+          authEmailInput.value = email;
         }
       }, 100);
     });
