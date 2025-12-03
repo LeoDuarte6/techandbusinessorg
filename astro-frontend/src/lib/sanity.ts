@@ -91,6 +91,18 @@ export async function getAllEpisodes() {
   return await client.fetch(query);
 }
 
+export async function getLatestEpisodes(limit = 3) {
+  const query = `*[_type == "episode"] | order(publishedAt desc)[0...${limit}] {
+    _id,
+    title,
+    slug,
+    episodeNumber,
+    publishedAt,
+    coverArt
+  }`;
+  return await client.fetch(query);
+}
+
 export async function getAuthorBySlug(slug: string) {
   const query = `*[_type == "author" && slug.current == $slug][0] {
     _id,

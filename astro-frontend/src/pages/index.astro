@@ -2,10 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import ArticleCard from '../components/ArticleCard.astro';
-import { getAllPosts } from '../lib/sanity';
+
+import { getAllPosts, getLatestEpisodes, urlFor } from '../lib/sanity';
 
 // Fetch real data from Sanity
 const posts = await getAllPosts(6);
+const episodes = await getLatestEpisodes(3);
 ---
 
 <BaseLayout>
@@ -34,6 +36,59 @@ const posts = await getAllPosts(6);
           ))
         ) : (
           <p class="text-[var(--theme-gray)]">No articles yet. Check back soon!</p>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Episodes Section -->
+  <section class="section-padding bg-[var(--theme-bg)] border-t border-[var(--theme-border)] transition-colors duration-300">
+    <div class="container-custom">
+      <div class="flex justify-between items-center mb-12">
+        <h2 class="text-4xl font-bold text-[var(--theme-text)]">Latest Episodes</h2>
+        <a 
+          href="/podcast" 
+          class="text-sm font-semibold text-[var(--theme-text)] hover:text-[var(--theme-gray)] transition-colors flex items-center gap-2"
+        >
+          View All Episodes
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {episodes && episodes.length > 0 ? (
+          episodes.map((episode) => (
+            <a href={`/podcast/${episode.slug.current}`} class="group block bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-xl overflow-hidden hover:border-[var(--theme-text)] transition-all duration-300">
+              <div class="aspect-square bg-[var(--theme-gray-light)] relative overflow-hidden">
+                {episode.coverArt ? (
+                  <img 
+                    src={urlFor(episode.coverArt).width(600).height(600).url()} 
+                    alt={episode.title}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div class="w-full h-full flex items-center justify-center text-[var(--theme-gray)]">
+                    <span class="text-4xl">🎙️</span>
+                  </div>
+                )}
+              </div>
+              <div class="p-6">
+                <div class="text-xs font-bold text-[var(--theme-gray)] uppercase tracking-wider mb-2">
+                  Episode {episode.episodeNumber}
+                </div>
+                <h3 class="text-xl font-bold text-[var(--theme-text)] mb-3 group-hover:underline decoration-2 underline-offset-4 line-clamp-2">
+                  {episode.title}
+                </h3>
+                <div class="text-sm text-[var(--theme-gray)]">
+                  {new Date(episode.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                </div>
+              </div>
+            </a>
+          ))
+        ) : (
+          <p class="text-[var(--theme-gray)]">No episodes yet. Check back soon!</p>
         )}
       </div>
     </div>
