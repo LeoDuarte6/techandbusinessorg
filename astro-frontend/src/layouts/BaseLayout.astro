@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import AuthModal from '../components/AuthModal.astro';
+
 
 interface Props {
   title?: string;
@@ -43,26 +43,6 @@ const {
       document.documentElement.setAttribute('data-theme', savedTheme);
     })();
   </script>
-  
-  <!-- Modal helper - MUST be inline and blocking -->
-  <script is:inline>
-    // Create global function to open auth modal
-    window.openAuthModal = function(tab) {
-      tab = tab || 'login';
-      var modal = document.getElementById('auth-modal');
-      var loginTab = document.getElementById('login-tab');
-      var signupTab = document.getElementById('signup-tab');
-      
-      if (modal) {
-        modal.classList.remove('hidden');
-        if (tab === 'signup' && signupTab) {
-          signupTab.click();
-        } else if (loginTab) {
-          loginTab.click();
-        }
-      }
-    };
-  </script>
 </head>
 <body>
   <nav class="relative z-50 bg-[var(--theme-bg)] border-b border-[var(--theme-border)] transition-colors duration-300">
@@ -83,7 +63,10 @@ const {
           <a href="/articles" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
             Articles
           </a>
-
+          <a href="/videos" class="text-sm font-semibold text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">
+            Reels
+          </a>
+          
           <!-- Theme Toggle -->
           <button id="theme-toggle" class="p-2 rounded-full hover:bg-[var(--theme-gray-light)] transition-colors" aria-label="Toggle Theme">
             <!-- Sun Icon (for dark mode) -->
@@ -93,14 +76,15 @@ const {
           </button>
 
           <!-- Auth Button -->
-          <button
+          <!-- Auth Button -->
+          <a 
+            href="/signin"
             id="auth-button"
-            onclick="window.openAuthModal('login'); return false;"
             class="hidden md:inline-block bg-[var(--theme-text)] text-[var(--theme-bg)] px-4 py-2 rounded text-sm font-semibold hover:opacity-80 transition-opacity"
           >
             Sign In
-          </button>
-
+          </a>
+          
           <!-- User Profile (shown when logged in) -->
           <div id="user-profile" class="hidden items-center gap-3">
             <span id="user-email" class="text-sm text-[var(--theme-gray)]"></span>
@@ -138,13 +122,13 @@ const {
           <a href="/about" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">About</a>
           <a href="/podcast" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Podcast</a>
           <a href="/articles" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Articles</a>
+          <a href="/videos" class="py-2 text-[var(--theme-gray)] hover:text-[var(--theme-text)] transition-colors">Reels</a>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- Auth Modal -->
-  <AuthModal />
+
 
   <main class="min-h-screen bg-[var(--theme-bg)] transition-colors duration-300">
     <slot />
@@ -157,13 +141,8 @@ const {
         The intersection of technology, business, and student ambition.
       </p>
       
-      <form 
-        id="footer-signup-form" 
-        onsubmit="event.preventDefault(); window.openAuthModal('signup'); return false;"
-        class="flex flex-col md:flex-row gap-3 max-w-md mx-auto mb-8"
-      >
+      <form class="flex flex-col md:flex-row gap-3 max-w-md mx-auto mb-8">
         <input 
-          id="footer-email-input"
           type="email" 
           placeholder="Enter your email address" 
           required
@@ -246,76 +225,54 @@ const {
       menuClose?.classList.toggle('hidden');
     });
 
+  </script>
+
+  <script>
     // Auth state management
     import { auth } from '../lib/supabase';
 
-    // Set up auth button - wait for DOM to be fully ready
-    document.addEventListener('DOMContentLoaded', () => {
-      const authButton = document.getElementById('auth-button');
-      const userProfile = document.getElementById('user-profile');
-      const userEmail = document.getElementById('user-email');
-      const logoutButton = document.getElementById('logout-button');
+    const authButton = document.getElementById('auth-button');
+    const userProfile = document.getElementById('user-profile');
+    const userEmail = document.getElementById('user-email');
+    const logoutButton = document.getElementById('logout-button');
 
-      // Auth button click - use global function for reliability
-      authButton?.addEventListener('click', () => {
-        if (typeof (window as any).openAuthModal === 'function') {
-          (window as any).openAuthModal('login');
-        }
-      });
-
-      // Footer signup form - open signup modal
-      const footerForm = document.getElementById('footer-signup-form');
-      footerForm?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (typeof (window as any).openAuthModal === 'function') {
-          (window as any).openAuthModal('signup');
-        }
-      });
-
-      // Logout button click handler
-      logoutButton?.addEventListener('click', async () => {
-        try {
-          await auth.signOut();
-          window.location.reload();
-        } catch (error) {
-          console.error('Logout error:', error);
-        }
-      });
-
-      // Update UI based on auth state
-      async function updateAuthUI() {
-        try {
-          const user = await auth.getUser();
-          
-          if (user) {
-            authButton?.classList.add('hidden');
-            userProfile?.classList.remove('hidden');
-            userProfile?.classList.add('md:flex');
-            if (userEmail) userEmail.textContent = user.email || '';
-          } else {
-            authButton?.classList.remove('hidden');
-            authButton?.classList.add('md:inline-block');
-            userProfile?.classList.add('hidden');
-            userProfile?.classList.remove('md:flex');
-          }
-        } catch (error) {
-          // Show login button if auth check fails
-          authButton?.classList.remove('hidden');
-          authButton?.classList.add('md:inline-block');
-        }
+    // Check auth state on load
+    auth.getUser().then(user => {
+      if (user) {
+        authButton?.classList.add('hidden');
+        userProfile?.classList.remove('hidden');
+        userProfile?.classList.add('md:flex');
+        if (userEmail) userEmail.textContent = user.email || '';
+      } else {
+        authButton?.classList.remove('hidden');
+        authButton?.classList.add('md:inline-block');
+        userProfile?.classList.add('hidden');
+        userProfile?.classList.remove('md:flex');
       }
+    });
 
-      // Initial auth check
-      updateAuthUI();
-
-      // Listen for auth changes
-      try {
-        auth.onAuthStateChange(() => {
-          updateAuthUI();
-        });
-      } catch (error) {
-        console.error('Error setting up auth listener:', error);
+    // Listen for auth changes
+    auth.onAuthStateChange((user) => {
+      if (user) {
+        authButton?.classList.add('hidden');
+        authButton?.classList.remove('md:inline-block');
+        userProfile?.classList.remove('hidden');
+        userProfile?.classList.add('md:flex');
+        if (userEmail) userEmail.textContent = user.email || '';
+      } else {
+        authButton?.classList.remove('hidden');
+        authButton?.classList.add('md:inline-block');
+        userProfile?.classList.add('hidden');
+        userProfile?.classList.remove('md:flex');
       }
+    });
+
+
+
+    // Logout button click
+    logoutButton?.addEventListener('click', async () => {
+      await auth.signOut();
+      window.location.reload();
     });
 
 

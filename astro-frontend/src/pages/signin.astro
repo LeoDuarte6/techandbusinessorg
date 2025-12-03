@@ -1,0 +1,226 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Sign In | Tech & Business" description="Sign in to your Tech & Business account">
+  <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-[var(--theme-bg)]">
+    <div class="max-w-md w-full space-y-8 bg-[var(--theme-bg)] border border-[var(--theme-border)] p-8 rounded-xl shadow-lg">
+      
+      <!-- Header -->
+      <div class="text-center">
+        <h2 id="page-title" class="mt-6 text-3xl font-bold text-[var(--theme-text)]">
+          Sign In
+        </h2>
+        <p class="mt-2 text-sm text-[var(--theme-gray)]">
+          Welcome back to Tech & Business
+        </p>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="mt-8 space-y-6">
+        <div class="space-y-4">
+          <div>
+            <label for="login-email" class="block text-sm font-medium text-[var(--theme-text)]">Email address</label>
+            <input id="login-email" name="email" type="email" autocomplete="email" required 
+              class="mt-1 block w-full px-4 py-3 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg text-[var(--theme-text)] placeholder-[var(--theme-gray)] focus:outline-none focus:ring-2 focus:ring-[var(--theme-text)] focus:border-transparent transition-colors"
+              placeholder="you@example.com">
+          </div>
+          <div>
+            <label for="login-password" class="block text-sm font-medium text-[var(--theme-text)]">Password</label>
+            <input id="login-password" name="password" type="password" autocomplete="current-password" required 
+              class="mt-1 block w-full px-4 py-3 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg text-[var(--theme-text)] placeholder-[var(--theme-gray)] focus:outline-none focus:ring-2 focus:ring-[var(--theme-text)] focus:border-transparent transition-colors"
+              placeholder="••••••••">
+          </div>
+        </div>
+
+        <div id="login-error" class="hidden text-sm text-red-500 text-center"></div>
+
+        <div class="flex items-center justify-between">
+          <div class="text-sm">
+            <button type="button" id="forgot-password" class="font-medium text-[var(--theme-text)] hover:opacity-80 transition-opacity">
+              Forgot your password?
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-[var(--theme-bg)] bg-[var(--theme-text)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--theme-text)] transition-all">
+            Sign in
+          </button>
+        </div>
+      </form>
+
+      <!-- Signup Form (Hidden by default) -->
+      <form id="signup-form" class="hidden mt-8 space-y-6">
+        <div class="space-y-4">
+          <div>
+            <label for="signup-email" class="block text-sm font-medium text-[var(--theme-text)]">Email address</label>
+            <input id="signup-email" name="email" type="email" autocomplete="email" required 
+              class="mt-1 block w-full px-4 py-3 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg text-[var(--theme-text)] placeholder-[var(--theme-gray)] focus:outline-none focus:ring-2 focus:ring-[var(--theme-text)] focus:border-transparent transition-colors"
+              placeholder="you@example.com">
+          </div>
+          <div>
+            <label for="signup-password" class="block text-sm font-medium text-[var(--theme-text)]">Password</label>
+            <input id="signup-password" name="password" type="password" autocomplete="new-password" required minlength="6"
+              class="mt-1 block w-full px-4 py-3 bg-[var(--theme-bg)] border border-[var(--theme-border)] rounded-lg text-[var(--theme-text)] placeholder-[var(--theme-gray)] focus:outline-none focus:ring-2 focus:ring-[var(--theme-text)] focus:border-transparent transition-colors"
+              placeholder="••••••••">
+            <p class="mt-1 text-xs text-[var(--theme-gray)]">Minimum 6 characters</p>
+          </div>
+        </div>
+
+        <div id="signup-error" class="hidden text-sm text-red-500 text-center"></div>
+
+        <div>
+          <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-[var(--theme-bg)] bg-[var(--theme-text)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--theme-text)] transition-all">
+            Create Account
+          </button>
+        </div>
+      </form>
+
+      <!-- Divider -->
+      <div class="relative">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-[var(--theme-border)]"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-2 bg-[var(--theme-bg)] text-[var(--theme-gray)]">Or continue with</span>
+        </div>
+      </div>
+
+      <!-- Google Login -->
+      <div>
+        <button id="google-login" class="w-full flex justify-center items-center gap-3 py-3 px-4 border border-[var(--theme-border)] rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--theme-text)] transition-colors">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+            <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
+              <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/>
+              <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/>
+              <path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/>
+              <path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/>
+            </g>
+          </svg>
+          Continue with Google
+        </button>
+      </div>
+
+      <!-- Toggle Mode -->
+      <div class="text-center mt-6">
+        <p class="text-sm text-[var(--theme-gray)]">
+          <span id="toggle-message">Don't have an account?</span>
+          <button type="button" id="toggle-mode" class="font-semibold text-[var(--theme-text)] hover:underline ml-1">
+            Sign Up
+          </button>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { auth } from '../lib/supabase';
+
+  const loginForm = document.getElementById('login-form') as HTMLFormElement;
+  const signupForm = document.getElementById('signup-form') as HTMLFormElement;
+  const loginError = document.getElementById('login-error');
+  const signupError = document.getElementById('signup-error');
+  const toggleModeBtn = document.getElementById('toggle-mode');
+  const toggleMessage = document.getElementById('toggle-message');
+  const pageTitle = document.getElementById('page-title');
+  const googleLoginBtn = document.getElementById('google-login');
+  const forgotPasswordBtn = document.getElementById('forgot-password');
+
+  let currentMode: 'login' | 'signup' = 'login';
+
+  // Toggle between login and signup
+  function switchMode(mode: 'login' | 'signup') {
+    currentMode = mode;
+
+    if (mode === 'signup') {
+      loginForm?.classList.add('hidden');
+      signupForm?.classList.remove('hidden');
+      if (pageTitle) pageTitle.textContent = 'Create Account';
+      if (toggleMessage) toggleMessage.textContent = 'Already have an account?';
+      if (toggleModeBtn) toggleModeBtn.textContent = 'Sign In';
+    } else {
+      signupForm?.classList.add('hidden');
+      loginForm?.classList.remove('hidden');
+      if (pageTitle) pageTitle.textContent = 'Sign In';
+      if (toggleMessage) toggleMessage.textContent = "Don't have an account?";
+      if (toggleModeBtn) toggleModeBtn.textContent = 'Sign Up';
+    }
+  }
+
+  toggleModeBtn?.addEventListener('click', () => {
+    switchMode(currentMode === 'login' ? 'signup' : 'login');
+  });
+
+  // Login form
+  loginForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = (document.getElementById('login-email') as HTMLInputElement).value;
+    const password = (document.getElementById('login-password') as HTMLInputElement).value;
+
+    const { error } = await auth.signIn(email, password);
+
+    if (error) {
+      if (loginError) {
+        loginError.textContent = error.message;
+        loginError.classList.remove('hidden');
+      }
+    } else {
+      // Redirect to home or dashboard
+      window.location.href = '/';
+    }
+  });
+
+  // Signup form
+  signupForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = (document.getElementById('signup-email') as HTMLInputElement).value;
+    const password = (document.getElementById('signup-password') as HTMLInputElement).value;
+
+    const { error } = await auth.signUp(email, password);
+
+    if (error) {
+      if (signupError) {
+        signupError.textContent = error.message;
+        signupError.classList.remove('hidden');
+        signupError.classList.remove('text-green-500');
+        signupError.classList.add('text-red-500');
+      }
+    } else {
+      if (signupError) {
+        signupError.textContent = 'Check your email to confirm your account!';
+        signupError.classList.remove('hidden', 'text-red-500');
+        signupError.classList.add('text-green-500');
+      }
+    }
+  });
+
+  // Google Login
+  googleLoginBtn?.addEventListener('click', async () => {
+    const { error } = await auth.signInWithGoogle();
+    if (error) {
+      alert('Error signing in with Google: ' + error.message);
+    }
+  });
+
+  // Forgot password
+  forgotPasswordBtn?.addEventListener('click', async () => {
+    const email = prompt('Enter your email address to reset your password:');
+    if (email) {
+      const { error } = await auth.resetPasswordForEmail(email);
+      if (error) {
+        alert('Error: ' + error.message);
+      } else {
+        alert('Password reset email sent! Check your inbox.');
+      }
+    }
+  });
+
+  // Check if we should default to signup (e.g. ?mode=signup)
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mode') === 'signup') {
+    switchMode('signup');
+  }
+</script>
